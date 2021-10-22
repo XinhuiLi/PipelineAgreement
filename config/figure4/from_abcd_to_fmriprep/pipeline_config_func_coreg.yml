@@ -1,0 +1,36 @@
+%YAML 1.1
+---
+# CPAC Pipeline Configuration YAML file
+# Version 1.8.1
+#
+# http://fcp-indi.github.io for more info.
+#
+# Tip: This file can be edited manually with a text editor for quick modifications.
+
+FROM: abcd-options
+
+registration_workflows: 
+
+  functional_registration: 
+
+    coregistration: 
+
+      boundary_based_registration: 
+        # this is a fork point
+        #   run: [On, Off] - this will run both and fork the pipeline
+        run: [On]
+
+        # Standard FSL 5.0 Scheduler used for Boundary Based Registration.
+        # It is not necessary to change this path unless you intend to use non-standard MNI registration.
+        bbr_schedule: $FSLDIR/etc/flirtsch/bbr.sch
+
+        # reference for boundary based registration
+        # options: 'whole-head' or 'brain'
+        reference: brain
+
+        # choose which FAST map to generate BBR WM mask
+        # options: 'probability_map', 'partial_volume_map'
+        bbr_wm_map: 'partial_volume_map'
+
+        # optional FAST arguments to generate BBR WM mask
+        bbr_wm_mask_args: '-bin'

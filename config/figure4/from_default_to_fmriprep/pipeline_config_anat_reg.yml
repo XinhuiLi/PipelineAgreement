@@ -1,0 +1,135 @@
+%YAML 1.1
+---
+# CPAC Pipeline Configuration YAML file
+# Version 1.8.1
+#
+# http://fcp-indi.github.io for more info.
+#
+# Tip: This file can be edited manually with a text editor for quick modifications.
+
+FROM: /media/ebs/config/default_pipeline.yml
+
+anatomical_preproc: 
+
+  # N4 bias field correction via ANTs
+  n4_bias_field_correction:
+
+    # this is a fork option
+    run: [On]
+
+    # An integer to resample the input image to save computation time. Shrink factors <= 4 are commonly used.
+    shrink_factor: 2
+
+registration_workflows: 
+
+  anatomical_registration: 
+
+    # The resolution to which anatomical images should be transformed during registration.
+    # This is the resolution at which processed anatomical files will be output.
+    resolution_for_anat: 1mm
+
+    # Template to be used during registration.
+    # It is not necessary to change this path unless you intend to use a non-standard template.
+    T1w_brain_template: /code/CPAC/resources/templates/tpl-MNI152NLin2009cAsym_res-01_desc-brain_T1w.nii.gz
+
+    # Template to be used during registration.
+    # It is not necessary to change this path unless you intend to use a non-standard template.
+    T1w_template: /code/CPAC/resources/templates/mni_icbm152_t1_tal_nlin_asym_09c.nii
+
+    # Register skull-on anatomical image to a template.
+    reg_with_skull: Off
+
+    registration: 
+
+      # option parameters
+      ANTs: 
+
+        # ANTs parameters for T1-template-based registration
+        T1_registration: 
+          - collapse-output-transforms: 1
+          - dimensionality: 3
+          - initial-moving-transform:
+              initializationFeature: 0
+          - transforms:
+            - Rigid:
+                convergence:
+                  convergenceThreshold: 1e-06
+                  convergenceWindowSize: 20
+                  iteration: 100x100
+                gradientStep: 0.05
+                metric:
+                  metricWeight: 1
+                  numberOfBins: 32
+                  samplingPercentage: 0.25
+                  samplingStrategy: Regular
+                  type: MI
+                shrink-factors: 2x1
+                smoothing-sigmas: 2.0x1.0vox
+                use-histogram-matching: On
+            - Affine:
+                convergence:
+                  convergenceThreshold: 1e-06
+                  convergenceWindowSize: 20
+                  iteration: 100x100
+                gradientStep: 0.08
+                metric:
+                  metricWeight: 1
+                  numberOfBins: 32
+                  samplingPercentage: 0.25
+                  samplingStrategy: Regular
+                  type: MI
+                shrink-factors: 2x1
+                smoothing-sigmas: 1.0x0.0vox
+                use-histogram-matching: On
+            - SyN:
+                convergence:
+                  convergenceThreshold: 1e-06
+                  convergenceWindowSize: 10
+                  iteration: 100x70x50x20
+                gradientStep: 0.1
+                metric:
+                  metricWeight: 1
+                  radius: 4
+                  type: CC
+                shrink-factors: 8x4x2x1
+                smoothing-sigmas: 3.0x2.0x1.0x0.0vox
+                totalFieldVarianceInVoxelSpace: 0.0
+                updateFieldVarianceInVoxelSpace: 3.0
+                use-histogram-matching: On
+                winsorize-image-intensities:
+                  lowerQuantile: 0.005
+                  upperQuantile: 0.995
+
+  functional_registration: 
+
+    func_registration_to_template: 
+
+      output_resolution: 
+
+        # The resolution (in mm) to which the preprocessed, registered functional timeseries outputs are written into.
+        # NOTE:
+        #   selecting a 1 mm or 2 mm resolution might substantially increase your RAM needs- these resolutions should be selected with caution.
+        #   for most cases, 3 mm or 4 mm resolutions are suggested.
+        # NOTE:
+        #   this also includes the single-volume 3D preprocessed functional data,
+        #   such as the mean functional (mean EPI) in template space
+        func_preproc_outputs: 3.438mmx3.438mmx3.4mm
+
+        # The resolution (in mm) to which the registered derivative outputs are written into.
+        # NOTE:
+        #   this is for the single-volume functional-space outputs (i.e. derivatives)
+        #   thus, a higher resolution may not result in a large increase in RAM needs as above
+        func_derivative_outputs: 3.438mmx3.438mmx3.4mm
+
+      target_template: 
+
+        # option parameters
+        T1_template: 
+
+          # Standard Skull Stripped Template. Used as a reference image for functional registration.
+          # This can be different than the template used as the reference/fixed for T1-to-template registration.
+          T1w_brain_template_funcreg: /code/CPAC/resources/templates/tpl-MNI152NLin2009cAsym_res-02_T1w_reference.nii.gz
+
+          # Standard Anatomical Brain Image with Skull.
+          # This can be different than the template used as the reference/fixed for T1-to-template registration.
+          T1w_template_funcreg: /code/CPAC/resources/templates/tpl-MNI152NLin2009cAsym_res-02_T1w_reference.nii.gz

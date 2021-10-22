@@ -1,0 +1,16 @@
+%YAML 1.1
+---
+# CPAC Pipeline Configuration YAML file
+# Version 1.8.1
+#
+# http://fcp-indi.github.io for more info.
+#
+# Tip: This file can be edited manually with a text editor for quick modifications.
+
+FROM: abcd-options
+
+anatomical_preproc: 
+
+  brain_extraction: 
+
+    using: [3dSkullStrip]

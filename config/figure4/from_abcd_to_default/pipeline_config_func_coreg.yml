@@ -1,0 +1,83 @@
+%YAML 1.1
+---
+# CPAC Pipeline Configuration YAML file
+# Version 1.8.1
+#
+# http://fcp-indi.github.io for more info.
+#
+# Tip: This file can be edited manually with a text editor for quick modifications.
+
+FROM: abcd-options
+
+registration_workflows:
+
+  functional_registration: 
+
+    coregistration:
+      # functional (BOLD/EPI) registration to anatomical (structural/T1)
+
+      run: On
+
+      # reference: 'brain' or 'restore-brain'
+      # In ABCD-options pipeline, 'restore-brain' is used as coregistration reference
+      reference: brain
+
+      # Choose FSL or ABCD as coregistration method
+      using: FSL
+
+      # Choose brain or whole-head as coregistration input
+      input: brain
+
+      # Choose coregistration interpolation
+      interpolation: trilinear
+
+      # Choose coregistration cost function
+      cost: corratio
+
+      # Choose coregistration degree of freedom
+      dof: 6
+
+      # Extra arguments for FSL flirt
+      arguments: None
+
+      func_input_prep:
+
+        # Choose whether to use functional brain or skull as the input to functional-to-anatomical registration
+        reg_with_skull: Off
+
+        # Choose whether to use the mean of the functional/EPI as the input to functional-to-anatomical registration or one of the volumes from the functional 4D timeseries that you choose.
+        # input: ['Mean_Functional', 'Selected_Functional_Volume', 'fmriprep_reference']
+        input: ['Mean_Functional']
+
+        Mean Functional:
+
+          # Run ANTs’ N4 Bias Field Correction on the input BOLD (EPI)
+          # this can increase tissue contrast which may improve registration quality in some data
+          n4_correct_func: False
+
+      boundary_based_registration:
+        # this is a fork point
+        #   run: [On, Off] - this will run both and fork the pipeline
+        run: [On]
+
+        # Standard FSL 5.0 Scheduler used for Boundary Based Registration.
+        # It is not necessary to change this path unless you intend to use non-standard MNI registration.
+        bbr_schedule: /usr/share/fsl/5.0/etc/flirtsch/bbr.sch
+
+        # reference for boundary based registration
+        # options: 'whole-head' or 'brain'
+        reference: whole-head
+
+        # choose which FAST map to generate BBR WM mask
+        # options: 'probability_map', 'partial_volume_map'
+        bbr_wm_map: 'probability_map'
+
+        # optional FAST arguments to generate BBR WM mask
+        bbr_wm_mask_args: '-thr 0.5 -bin'
+
+functional_preproc:
+
+  generate_func_mean:
+
+    # Generate mean functional image
+    run: On
