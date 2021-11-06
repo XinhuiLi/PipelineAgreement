@@ -8,7 +8,7 @@ import scipy.stats as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-axis_tick_size=15
+axis_tick_size=17
 lw_value=2
 to_sum = False#True
 
@@ -32,8 +32,8 @@ for corr_type in ['pearson']:
         return kde.evaluate(x_grid)
 
     #datain='/data3/cnl/fmriprep/Lei_working/testing/ICC_Scan_duration/All_sessions/figures/ICC_1000_All_' + corr_type
-    #datain='/Users/xinhui.li/Documents/reproducibility/reproducibility/figure/3/ICC_1000_All_pearson_rank_eps'
-    datain='/Users/xinhui.li/Documents/reproducibility/reproducibility/figure/3/ICC_1000_All_pearson_no_rank_eps'
+    datain='/Users/xinhui.li/Documents/reproducibility/XL/figure/3/ICC_1000_All_pearson_rank_eps'
+    # datain='/Users/xinhui.li/Documents/reproducibility/XL/figure/3/ICC_1000_All_pearson_no_rank_eps'
 
     def re_sample(x,y,x_grid):
         y_out=np.linspace(0, 0, len(x_grid))
@@ -74,10 +74,8 @@ for corr_type in ['pearson']:
                     if os.path.isfile(file):
                         data=np.loadtxt(file)
                         data=data[data>np.finfo(np.float32).eps]
-                        # plt.cla()
                         pdf_tmp=sns.kdeplot(data,gridsize=200).get_lines()[0].get_data()
                         pdf=re_sample(pdf_tmp[0],pdf_tmp[1],x_grid)
-                        #pdf=kde_scipy(data,x_grid,bandwidth=0.2)
                         dataall[random_num,:]=pdf
 
                 np.savetxt(datain+'/Random_All_Pipeline-'+str(pl)+'_Ses_'+str(ses)+'.txt',dataall)
@@ -86,7 +84,7 @@ for corr_type in ['pearson']:
     nrow = 2
     ncol = 3
     plt.cla()
-    fig, axs = plt.subplots(nrow,3,figsize=(15, 2.5*nrow),sharex=True,sharey='row',dpi=600)
+    fig, axs = plt.subplots(nrow,3,figsize=(15, 3*nrow),sharex=True,sharey='row',dpi=600)
 
     same_pipe_same_scan_start_index = 0
     diff_pipe_same_scan_start_index = 12
@@ -106,7 +104,7 @@ for corr_type in ['pearson']:
                 axs[row, (ses-1)].axvline(x=i, lw=lw_value, clip_on=False, color='lightgray')
 
         for col in range(ncol):
-            '''
+            
             # same scan
             if col == 0:
                 # no GSR vs no GSR
@@ -146,7 +144,7 @@ for corr_type in ['pearson']:
                     pipelist = np.arange(same_pipe_diff_scan_start_index+2, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs GSR, diff scan, same pipe, [38, 41, 44, 47]
                 elif row == 1:
                     pipelist = np.arange(diff_pipe_diff_scan_start_index+2, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # [50 54 58 62 66 70]
-            
+            '''
             for num, pl in enumerate(pipelist):
                 # set color
                 if row in [0,2,4]:
@@ -179,7 +177,6 @@ for corr_type in ['pearson']:
                         dataall=np.concatenate((np.loadtxt(datain+'/Random_All_Pipeline-'+str(pl)+'_Ses_'+str(ses)+'.txt'), np.loadtxt(datain+'/Random_All_Pipeline-'+str(pl+1)+'_Ses_'+str(ses)+'.txt')))
                     else:
                         dataall=np.loadtxt(datain+'/Random_All_Pipeline-'+str(pl)+'_Ses_'+str(ses)+'.txt')
-                    # dataall=np.loadtxt(datain+'/Random_All_Pipeline-'+str(pl)+'_Ses_'+str(ses)+'.txt')
                     datamean=[]
                     data_lb=[]
                     data_up=[]
@@ -197,8 +194,7 @@ for corr_type in ['pearson']:
                     axs[row, col].fill_between(x_grid, data_lb, data_up, color=color_plot, alpha=0.8)
                     axs[row, col].plot(x_grid, datamean, linewidth=0.5, color='black')
                     axs[row, col].tick_params(axis='both', which='major', labelsize=axis_tick_size)
-
-                    axs[row, col].set_ylim([-0.1,6])
+                    axs[row, col].set_ylim([-0.1, 6])
 
                     # add x ticks at last row
                     if row == nrow-1:
@@ -206,5 +202,5 @@ for corr_type in ['pearson']:
                         axs[row, col].set_xticklabels(['0', '0.6', '0.8', '0.9'])
 
     plt.tight_layout()
-    # plt.savefig(datain + '/ICC_same_ses_gsr_10min.png')
-    plt.savefig(datain + '/ICC_diff_ses_gsr_10min.png')
+    plt.savefig('./Figure3_same_ses_gsr_10min.png', dpi=300)
+    # plt.savefig('./Figure3_diff_ses_gsr_10min.png', dpi=300)

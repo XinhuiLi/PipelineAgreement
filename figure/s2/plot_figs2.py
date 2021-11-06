@@ -9,7 +9,6 @@ from scipy.io import loadmat
 from scipy.stats import rankdata
 from scipy.stats import spearmanr
 
-
 def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_handle,simpleplot,corr_type):
 
     '''
@@ -97,8 +96,9 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
 
         return numerator/denominator
 
-    def ridgeplot(df,atlases,outfile):
 
+    def ridgeplot(df,atlases,outfile):
+        
         show_label=False
         # Initialize the FacetGrid object
         x=[]
@@ -108,7 +108,7 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
 
         # for colour and row name match
         with sns.plotting_context(font_scale=5):
-            g1 = sns.FacetGrid(df, row="g", hue="g", aspect=len(pipelines), height=2)
+            g1 = sns.FacetGrid(df, row="g", hue="g", aspect=len(pipelines)*(len(pipelines)-1)/2, height=2)
         default_rowname=g1.row_names
 
         sortidx=[]
@@ -116,11 +116,11 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
             sortidx.append(list(roworder).index(i))
 
         pal = np.asarray(sns.cubehelix_palette(len(np.unique(df['g'])), start=.5, rot=-.75,light=0.7))
-        pal=pal[::-1]
-        with sns.plotting_context(font_scale=5):
-            g = sns.FacetGrid(df, sharey=False, row="g", hue="g", aspect=5, height=2, palette=pal)
 
-        # Draw the densities in a few steps
+        pal=pal[::-1]
+        pal=pal[sortidx]
+        with sns.plotting_context(font_scale=5):
+            g = sns.FacetGrid(df, sharey=False, row="g", hue="g", row_order=roworder, aspect=5, height=2, palette=pal)
 
         if len(atlases)==1:
             g.map(sns.kdeplot, "x",shade=True,color='red')
@@ -168,38 +168,46 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
         g.savefig(outfile)
         return [x for _,x in sorted(zip(sortidx,default_rowname))]
 
-    value_median=pd.DataFrame(np.zeros((len(pipelines),4)), columns=['Pipelines','Atlas200','Atlas600','Atlas1000'])
-    value_std=pd.DataFrame(np.zeros((len(pipelines),4)), columns=['Pipelines','Atlas200','Atlas600','Atlas1000'])
-    value_quartile=pd.DataFrame(np.zeros((len(pipelines),13)), columns=['Pipelines','25_Atlas200','50_Atlas200','75_Atlas200','100_Atlas200','25_Atlas600','50_Atlas600','75_Atlas600','100_Atlas600','25_Atlas1000','50_Atlas1000','75_Atlas1000','100_Atlas1000'])
+    # define matrix for mean and median
+    value_median=pd.DataFrame(np.zeros(((len(pipelines)*(len(pipelines)-1))//2,4)), columns=['Pipelines','Atlas200','Atlas600','Atlas1000'])
+    value_std=pd.DataFrame(np.zeros(((len(pipelines)*(len(pipelines)-1))//2,4)), columns=['Pipelines','Atlas200','Atlas600','Atlas1000'])
+    value_quartile=pd.DataFrame(np.zeros(((len(pipelines)*(len(pipelines)-1))//2,13)), columns=['Pipelines','25_Atlas200','50_Atlas200','75_Atlas200','100_Atlas200','25_Atlas600','50_Atlas600','75_Atlas600','100_Atlas600','25_Atlas1000','50_Atlas1000','75_Atlas1000','100_Atlas1000'])
 
     atlas_idx=0
     for atlas in atlases:
-        num_idx=len(pipelines)
+
+        num_idx=(len(pipelines)*(len(pipelines)-1))//2
         color_palette = sns.color_palette("Paired",num_idx)
         for i in range(0,len(pipelines)):
-            p1=pipelines[i][0]
-            p2=pipelines[i][1]
-            pp='sc_' + p1 + '_' + p2
-            locals()[pp]=[]
+            for j in range(i+1,len(pipelines)):
+                p1=pipelines[i]
+                p2=pipelines[j]
+                pp='sc_' + p1 + '_' + p2
+                locals()[pp]=[]
 
-        basesub=25426
-        for i in range(1,31):
-            if basesub+i == 25430:
+        # basesub=25426
+        sub_list=os.listdir(base +'/ROI_Schaefer' + atlas + '/v181-HBN-default')
+        for sub in sub_list:
+            stop=0
+            for xxx in pipelines:
+                foldercontent=os.listdir(base +'/ROI_Schaefer' + atlas + '/' + xxx)
+                if sub not in str(foldercontent):
+                    print(xxx + 'not in')
+                    print(sub)
+                    stop=1
+            if stop==1:
                 continue
 
-            # put them all together, load each pipeline file and calcuate correlation and give it a different name.
-            for pipe in pipelines:
-                for pl in pipe:
-                    datafolder = base +'/ROI_Schaefer' + atlas + '/' + pl
-                    cpacfile=datafolder + '/sub-00' + str(basesub+i) + 'a.1D'
-                    data=np.genfromtxt(cpacfile)
-                    if data.shape[0] != 295:
-                        idx= data.shape[0]-295
-                        data=data[idx:,]
-                    data=data.transpose()
-                    data_corr=np.corrcoef(data)
-                    tmp_corr_tri=upper_tri_indexing(data_corr)
-                    locals()[pl+'_corr_tri']=tmp_corr_tri
+            # put them all together, load each pipeline file and calcuate calrelaiton and give it a different name.
+            for pl in pipelines:
+                datafolder = base +'/ROI_Schaefer' + atlas + '/' + pl
+                #/data3/cnl/fmriprep/Lei_working/CPAC_XCP/CPAC_aggre_output/sub-0025427a_ses-1_bandpassed_demeaned_filtered_antswarp_cc200.1D
+                cpacfile=datafolder + '/' + sub
+                data=np.genfromtxt(cpacfile)
+                data=data.transpose()
+                data_corr=np.corrcoef(data)
+                tmp_corr_tri=upper_tri_indexing(data_corr)
+                locals()[pl+'_corr_tri']=tmp_corr_tri
 
             def spatial_correlation(corr_a,corr_b,sc,corr_type):
                 if fc_handle=='Scale':
@@ -222,20 +230,20 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
                     sc.append(np.corrcoef(corr_a_new,corr_b_new)[0,1])
                 return sc
 
-
             ### do correlaiton between pipelines
-            num_idx=len(pipelines)
+            num_idx=(len(pipelines)*(len(pipelines)-1))//2
             color_palette = sns.color_palette("Paired",num_idx)
             for i in range(0,len(pipelines)):
-                p1=pipelines[i][0]
-                corr1= locals()[p1 + '_corr_tri']
-                p2=pipelines[i][1]
-                corr2= locals()[p2 + '_corr_tri']
-                pp='sc_' + p1 + '_' + p2
-                locals()[pp] = spatial_correlation(corr1,corr2,locals()[pp],corr_type)
+                for j in range(i+1,len(pipelines)):
+                    p1=pipelines[i]
+                    corr1= locals()[p1 + '_corr_tri']
+                    p2=pipelines[j]
+                    corr2= locals()[p2 + '_corr_tri']
+                    pp='sc_' + p1 + '_' + p2
+                    locals()[pp] = spatial_correlation(corr1,corr2,locals()[pp],corr_type)
 
         idx=0
-        num_idx=len(pipelines)
+        num_idx=(len(pipelines)*(len(pipelines)-1))//2
         color_palette = sns.color_palette("Paired",num_idx)
         
         df_all=pd.DataFrame(columns = ['x','g'])
@@ -244,41 +252,41 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
         else:
             plotrange=len(pipelines)
         for i in range(0,plotrange):
-            print(idx)
-            p1=pipelines[i][0]
-            p2=pipelines[i][1]
-            pp1='sc_' + p1 + '_' + p2
-            pp2='sc_' + p2 + '_' + p1
-            if pp1 in locals():
-                pp = locals()[pp1]
-                print(pp1)
-            elif pp2 in locals():
-                pp = locals()[pp2]
-                print(pp2)
-            pn1=p1
-            pn2=p2
-            for key in namechangedict:
-                pn1=pn1.replace(key,namechangedict[key])
-            for key in namechangedict:
-                pn2=pn2.replace(key,namechangedict[key])
+            for j in range(i+1,len(pipelines)):
+                print(idx)
+                p1=pipelines[i]
+                p2=pipelines[j]
+                pp1='sc_' + p1 + '_' + p2
+                pp2='sc_' + p2 + '_' + p1
+                if pp1 in locals():
+                    pp = locals()[pp1]
+                    print(pp1)
+                elif pp2 in locals():
+                    pp = locals()[pp2]
+                    print(pp2)
+                pn1=p1
+                pn2=p2
+                for key in namechangedict:
+                    pn1=pn1.replace(key,namechangedict[key])
+                for key in namechangedict:
+                    pn2=pn2.replace(key,namechangedict[key])
 
-            print(pp)
-            # get median and std
-            print(pp1+str(np.median(pp))+str(np.std(pp)))
-            value_median['Pipelines'][idx] = pp1
-            value_median['Atlas'+atlas][idx] = np.median(pp)
+                # get median and std
+                print(pp1+str(np.median(pp))+str(np.std(pp)))
+                value_median['Pipelines'][idx] = pp1
+                value_median['Atlas'+atlas][idx] = np.median(pp)
 
-            value_std['Pipelines'][idx] = pp1
-            value_std['Atlas'+atlas][idx] = np.std(pp)
-            
-            value_quartile['Pipelines'][idx] = pp1
-            for pct_val in [25,50,75,100]:
-                value_quartile[str(pct_val)+'_Atlas'+atlas][idx] = np.percentile(pp, pct_val, interpolation = 'midpoint') 
+                value_std['Pipelines'][idx] = pp1
+                value_std['Atlas'+atlas][idx] = np.std(pp)
 
-            tmp=pd.DataFrame(pp, columns=['x'])
-            tmp['g']=pn1+' - '+pn2
-            df_all=pd.concat([df_all,tmp])
-            idx +=1
+                value_quartile['Pipelines'][idx] = pp1
+                for pct_val in [25,50,75,100]:
+                    value_quartile[str(pct_val)+'_Atlas'+atlas][idx] = np.percentile(pp, pct_val, interpolation = 'midpoint') 
+
+                tmp=pd.DataFrame(pp, columns=['x'])
+                tmp['g']=pn1+' - '+pn2
+                df_all=pd.concat([df_all,tmp])
+                idx +=1
 
         # put multiple atlas in one redge plot. 
         if atlas_idx==0:
@@ -290,12 +298,17 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
         atlas_idx += 1
 
     print(value_median)
+    value_median.to_csv(os.path.dirname(base) + '/figures/Ridgeplot_spatial_corr_'+corr_type+'_'+'-'.join(pipelines)[0:90]+'_Median.csv')
+    value_std.to_csv(os.path.dirname(base) + '/figures/Ridgeplot_spatial_corr_'+corr_type+'_'+'-'.join(pipelines)[0:90]+'_std.csv')
 
-    plotnameorder=ridgeplot(df_ridge,atlases,os.path.dirname(base)+'/figures/Figure2_PearsonCorr.png')
+    value_quartile.to_csv(os.path.dirname(base) + '/figures/Ridgeplot_spatial_corr_'+corr_type+'_'+'-'.join(pipelines)[0:90]+'_quartile.csv')
+
+
+    plotnameorder=ridgeplot(df_ridge,atlases,os.path.dirname(base) + '/figures/Ridgeplot_spatial_corr_'+corr_type+'_'+'-'.join(pipelines)[0:90]+'_'+atlas+'.png')
 
     return plotnameorder
 
-def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotnameorder=False):
+def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotnameorder):
 
     def ridgeplot(df,atlases,outfile,plotnameorder):
         show_label=False
@@ -307,7 +320,7 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
 
         # for colour and row name match
         with sns.plotting_context(font_scale=5):
-            g1 = sns.FacetGrid(df, row="g", hue="g", aspect=len(pipelines), height=2)
+            g1 = sns.FacetGrid(df, row="g", hue="g", aspect=len(pipelines)*(len(pipelines)-1)/2, height=2)
         default_rowname=g1.row_names
 
         if plotnameorder:
@@ -319,15 +332,11 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
         pal = np.asarray(sns.cubehelix_palette(len(np.unique(df['g'])), start=.5, rot=-.75,light=0.7))
 
         pal=pal[::-1]
+        pal=pal[sortidx]
         with sns.plotting_context(font_scale=5):
-            g = sns.FacetGrid(df, sharey=False, row="g", hue="atlas", aspect=5, height=2, palette=['red','blue','black'])
+            g = sns.FacetGrid(df, sharey=False, row="g", hue="atlas", row_order=roworder, aspect=5, height=2, palette=['red','blue','black'])
 
-        # Draw the densities in a few steps
-        
-        if len(atlases) ==1:
-            g.map(sns.kdeplot, "x",shade=True,color='red')
-        else:
-            g.map(sns.kdeplot, "x",shade=True)
+        g.map(sns.kdeplot, "x", shade=True)
 
         lw_value=3
         g.map(plt.axvline, x=1, lw=lw_value, clip_on=False,color=(134/256.0,250/256.0,167/256.0))
@@ -361,11 +370,14 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
         if len(os.path.basename(outfile))>140:
             outfile=os.path.dirname(outfile)+ '/' + os.path.basename(outfile)[0:130]+'.png'
 
+
         g.savefig(outfile)
 
-    value_median=pd.DataFrame(np.zeros((len(pipelines),4)), columns=['Pipelines','Atlas200','Atlas600','Atlas1000'])
-    value_std=pd.DataFrame(np.zeros((len(pipelines),4)), columns=['Pipelines','Atlas200','Atlas600','Atlas1000'])
-    value_quartile=pd.DataFrame(np.zeros((len(pipelines),13)), columns=['Pipelines','25_Atlas200','50_Atlas200','75_Atlas200','100_Atlas200','25_Atlas600','50_Atlas600','75_Atlas600','100_Atlas600','25_Atlas1000','50_Atlas1000','75_Atlas1000','100_Atlas1000'])
+
+    value_median=pd.DataFrame(np.zeros(((len(pipelines)*(len(pipelines)-1))//2,4)), columns=['Pipelines','Atlas200','Atlas600','Atlas1000'])
+    value_std=pd.DataFrame(np.zeros(((len(pipelines)*(len(pipelines)-1))//2,4)), columns=['Pipelines','Atlas200','Atlas600','Atlas1000'])
+    value_quartile=pd.DataFrame(np.zeros(((len(pipelines)*(len(pipelines)-1))//2,13)), columns=['Pipelines','25_Atlas200','50_Atlas200','75_Atlas200','100_Atlas200','25_Atlas600','50_Atlas600','75_Atlas600','100_Atlas600','25_Atlas1000','50_Atlas1000','75_Atlas1000','100_Atlas1000'])
+
 
     atlas_idx=0
     for atlas in atlases:
@@ -377,47 +389,45 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
         else:
             plotrange=len(pipelines)
         for i in range(0,plotrange):
-            p1=pipelines[i][0]
-            p2=pipelines[i][1]
-            p1=p1.replace('ABCD','abcd')
-            p2=p2.replace('ABCD','abcd')
-            pp1= base+ '/ICC_Schaefer' + atlas + '/' + p1 + '_' + p2 + '_ICC.csv'
-            pp2= base+ '/ICC_Schaefer' + atlas + '/' + p2 + '_' + p1 + '_ICC.csv'
-            print(pp1)
-            print(pp2)
-            if os.path.isfile(pp1):
-                tmp=pd.read_csv(pp1,header=None,names=['x'])
-                tmp=tmp['x'][np.where(tmp>np.finfo(np.float32).eps)[0]].to_frame()
-            elif os.path.isfile(pp2):
-                tmp=pd.read_csv(pp2,header=None,names=['x'])
-                tmp=tmp['x'][np.where(tmp>np.finfo(np.float32).eps)[0]].to_frame()
+            for j in range(i+1,len(pipelines)):
+                p1=pipelines[i]
+                p2=pipelines[j]
+                p1=p1.replace('ABCD','abcd')
+                p2=p2.replace('ABCD','abcd')
+                pp1= base+ '/ICC_Schaefer' + atlas + '/' + p1 + '_' + p2 + '_ICC.csv'
+                pp2= base+ '/ICC_Schaefer' + atlas + '/' + p2 + '_' + p1 + '_ICC.csv'
+                print(pp1)
+                print(pp2)
+                if os.path.isfile(pp1):
+                    tmp=pd.read_csv(pp1,header=None,names=['x'])
+                    tmp=tmp['x'][np.where(tmp>np.finfo(np.float32).eps)[0]].to_frame()
+                elif os.path.isfile(pp2):
+                    tmp=pd.read_csv(pp2,header=None,names=['x'])
+                    tmp=tmp['x'][np.where(tmp>np.finfo(np.float32).eps)[0]].to_frame()
+                
+                pn1=p1
+                pn2=p2
+                for key in namechangedict:
+                    pn1=pn1.replace(key,namechangedict[key])
+                for key in namechangedict:
+                    pn2=pn2.replace(key,namechangedict[key])
 
-            pn1=p1
-            pn2=p2
-            for key in namechangedict:
-                pn1=pn1.replace(key,namechangedict[key])
-            for key in namechangedict:
-                pn2=pn2.replace(key,namechangedict[key])
+                # get median and std
+                print(pp1+str(np.median(tmp))+str(np.std(tmp)))
+                value_median['Pipelines'][idx] = p1+'_'+p2
+                value_median['Atlas'+atlas][idx] = np.median(tmp)
 
-            # get median and std
-            print(pp1+str(np.median(tmp))+str(np.std(tmp)))
-            value_median['Pipelines'][idx] = p1+'_'+p2
-            value_median['Atlas'+atlas][idx] = np.median(tmp)
+                value_std['Pipelines'][idx] = p1+'_'+p2
+                value_std['Atlas'+atlas][idx] = np.std(tmp)
 
-            value_std['Pipelines'][idx] = p1+'_'+p2
-            value_std['Atlas'+atlas][idx] = np.std(tmp)
+                value_quartile['Pipelines'][idx] = p1+'_'+p2
+                for pct_val in [25,50,75,100]:
+                    value_quartile[str(pct_val)+'_Atlas'+atlas][idx] = np.percentile(tmp, pct_val, interpolation = 'midpoint') 
 
-            value_quartile['Pipelines'][idx] = p1+'_'+p2
-            for pct_val in [25,50,75,100]:
-                value_quartile[str(pct_val)+'_Atlas'+atlas][idx] = np.percentile(tmp, pct_val, interpolation = 'midpoint') 
-
-            # get median and std
-            print(pp1+str(np.median(tmp))+str(np.std(tmp)))
-            tmp['g']=pn1+' - '+pn2
-            df_all=pd.concat([df_all,tmp])
-            print(df_all.head(3))
-            idx += 1
-        
+                tmp['g']=pn1+' - '+pn2
+                df_all=pd.concat([df_all,tmp])
+                print(df_all.head(3))
+                idx += 1
         # put multiple atlas in one plot
         if atlas=='200':
             df_ridge_1=df_all
@@ -440,11 +450,13 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
         df=pd.concat([df_ridge_1,df_ridge_2,df_ridge_3])
     df = df[df['x'] != 0]
 
-    value_median.to_csv(os.path.dirname(base) + '/figures/Figure2_ICC_Median.csv')
-    value_std.to_csv(os.path.dirname(base) + '/figures/Figure2_ICC_std.csv')
-    value_quartile.to_csv(os.path.dirname(base) + '/figures/Figure2_ICC_quartile.csv')
+    print(value_median)
 
-    ridgeplot(df,atlases,outpath + '/Figure2_ICC.png',plotnameorder)
+    value_median.to_csv(os.path.dirname(base) + '/figures/Ridgeplot_ICC_'+'_'+'-'.join(pipelines)[0:90]+'_Median.csv')
+    value_std.to_csv(os.path.dirname(base) + '/figures/Ridgeplot_ICC_'+'_'+'-'.join(pipelines)[0:90]+'_std.csv')
+    value_quartile.to_csv(os.path.dirname(base) + '/figures/Ridgeplot_ICC_'+'_'+'-'.join(pipelines)[0:90]+'_quartile.csv')
+
+    ridgeplot(df,atlases,outpath + '/Ridgeplot_ICC_'+'_'+'-'.join(pipelines)[0:90]+'_'+atlas+'.png',plotnameorder)
 
 
 if __name__=='__main__':
@@ -455,16 +467,12 @@ if __name__=='__main__':
     wd_path='/Users/xinhui.li/Documents/reproducibility/LA/Reproducibility_Analysis'
     base=wd_path+'/ROI'
 
-    namechangedict={'cpac_default_v1.8':'CPAC:Default',
-                    'fmriprep_default':'fMRIPrep',
-                    'cpac_fmriprep_v1.8_v2':'CPAC:fMRIPrep',
-                    'ABCD':'abcd',
-                    'cpac_abcd_v1.8':'CPAC:ABCD',
-                    'ccs_rerun':'CCS',
-                    'cpac_ccs_v1.8':'CPAC:CCS',
-                    'dpabi':'DPARSF'}
+    namechangedict={'v181-HBN-default':'CPAC:Default',
+                    'v181-HBN-fmriprep-opts':'fMRIPrep',
+                    'v181-HBN-DCAN':'abcd',
+                    'v181-HBN-CCS':'CCS'}
 
-    pipelines=[['cpac_default_v1.8','ABCD'], ['cpac_abcd_v1.8','ABCD'], ['cpac_default_v1.8','ccs_rerun'], ['cpac_ccs_v1.8','ccs_rerun'], ['cpac_default_v1.8','fmriprep_default'], ['cpac_fmriprep_v1.8_v2','fmriprep_default']]
+    pipelines=['v181-HBN-CCS', 'v181-HBN-DCAN', 'v181-HBN-default', 'v181-HBN-fmriprep-opts']
 
-    spatial_corr_ridgeplot(base,base.replace('ROI','figures'),pipelines,atlases,namechangedict,fc_handle,simpleplot,'pearson')
-    ICC_ridgeplot(base.replace('ROI','figures'),base.replace('ROI','figures'),pipelines,atlases,namechangedict,simpleplot)
+    nameorder=spatial_corr_ridgeplot(base,base.replace('ROI','figures'),pipelines,atlases,namechangedict,fc_handle,simpleplot,'pearson')
+    ICC_ridgeplot(base.replace('ROI','figures'),base.replace('ROI','figures'),pipelines,atlases,namechangedict,simpleplot,nameorder)

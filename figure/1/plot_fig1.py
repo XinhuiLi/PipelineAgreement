@@ -409,11 +409,11 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
                 print(pp2)
                 if os.path.isfile(pp1):
                     tmp=pd.read_csv(pp1,header=None,names=['x'])
-                    print(pp1)
+                    tmp=tmp['x'][np.where(tmp>np.finfo(np.float32).eps)[0]].to_frame()
                 elif os.path.isfile(pp2):
                     tmp=pd.read_csv(pp2,header=None,names=['x'])
-                    print(pp1)
-                
+                    tmp=tmp['x'][np.where(tmp>np.finfo(np.float32).eps)[0]].to_frame()
+
                 pn1=p1
                 pn2=p2
                 for key in namechangedict:
@@ -437,7 +437,8 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
                 df_all=pd.concat([df_all,tmp])
                 print(df_all.head(3))
                 idx += 1
-        # put multiple atlas in one redge plot
+
+        # put multiple atlas in one plot
         if atlas=='200':
             df_ridge_1=df_all
             df_ridge_1['atlas']='200'
@@ -463,7 +464,6 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
 
     value_median.to_csv(os.path.dirname(base) + '/figures/Ridgeplot_ICC_'+'_'+'-'.join(pipelines)[0:90]+'_Median.csv')
     value_std.to_csv(os.path.dirname(base) + '/figures/Ridgeplot_ICC_'+'_'+'-'.join(pipelines)[0:90]+'_std.csv')
-
     value_quartile.to_csv(os.path.dirname(base) + '/figures/Ridgeplot_ICC_'+'_'+'-'.join(pipelines)[0:90]+'_quartile.csv')
 
     ridgeplot(df,atlases,outpath + '/Ridgeplot_ICC_'+'_'+'-'.join(pipelines)[0:90]+'_'+atlas+'.png',plotnameorder)
@@ -480,10 +480,10 @@ if __name__=='__main__':
     namechangedict={'cpac_default_v1.8':'CPAC:Default',
                     'fmriprep_default':'fMRIPrep',
                     'ABCD':'abcd',
-                    'ccs':'CCS',
+                    'ccs_rerun':'CCS',
                     'dpabi':'DPARSF'}
 
-    pipelines=['ABCD','fmriprep_default','ccs','cpac_default','dpabi']
+    pipelines=['ABCD','fmriprep_default','ccs_rerun','cpac_default_v1.8','dpabi']
 
     nameorder=spatial_corr_ridgeplot(base,base.replace('ROI','figures'),pipelines,atlases,namechangedict,fc_handle,simpleplot,'pearson')
     ICC_ridgeplot(base.replace('ROI','figures'),base.replace('ROI','figures'),pipelines,atlases,namechangedict,simpleplot,nameorder)

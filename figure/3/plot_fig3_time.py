@@ -8,7 +8,7 @@ import scipy.stats as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-axis_tick_size=15
+axis_tick_size=17
 lw_value=2
 to_sum = False#True
 
@@ -32,8 +32,8 @@ for corr_type in ['pearson']:
         return kde.evaluate(x_grid)
 
     # datain='/data3/cnl/fmriprep/Lei_working/testing/ICC_Scan_duration/All_sessions/figures/ICC_1000_All_' + corr_type
-    # datain='/Users/xinhui.li/Documents/reproducibility/reproducibility/figure/3/ICC_1000_All_pearson_rank_eps'
-    datain='/Users/xinhui.li/Documents/reproducibility/reproducibility/figure/3/ICC_1000_All_pearson_no_rank_eps'
+    datain='/Users/xinhui.li/Documents/reproducibility/XL/figure/3/ICC_1000_All_pearson_rank_eps'
+    # datain='/Users/xinhui.li/Documents/reproducibility/XL/figure/3/ICC_1000_All_pearson_no_rank_eps'
 
     def re_sample(x,y,x_grid):
         y_out=np.linspace(0, 0, len(x_grid))
@@ -85,7 +85,7 @@ for corr_type in ['pearson']:
     ### same pipeline ###
     nrow = 2
     plt.cla()
-    fig, axs = plt.subplots(nrow,3,figsize=(15, 2.5*nrow),sharex=True,sharey='row',dpi=600)
+    fig, axs = plt.subplots(nrow,3,figsize=(15, 3*nrow),sharex=True,sharey='row',dpi=600)
 
     same_pipe_same_scan_start_index = 0
     diff_pipe_same_scan_start_index = 12
@@ -99,10 +99,9 @@ for corr_type in ['pearson']:
     diff_pipe_itv = 4
 
     for row in range(nrow):
-
+        '''
         # same session
         # no GSR vs no GSR
-
         if row == 0:
             pipelist = np.arange(same_pipe_same_scan_start_index, same_pipe_same_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, same scan, same pipe, [0, 3, 6, 9]
         elif row == 1:
@@ -114,7 +113,7 @@ for corr_type in ['pearson']:
             pipelist = np.arange(same_pipe_diff_scan_start_index, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, diff scan, same pipe, [36, 39, 42, 45]
         elif row == 1:
             pipelist = np.arange(diff_pipe_diff_scan_start_index, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # no GSR vs no GSR, diff scan, diff pipe, [48, 52, 56, 60, 64, 68]
-        '''
+        
         for ses in range(1,4):
             for i in [0.6,0.8,0.9]:
                 axs[row, (ses-1)].axvline(x=i, lw=lw_value, clip_on=False, color='lightgray')
@@ -173,5 +172,5 @@ for corr_type in ['pearson']:
                     axs[row, (ses-1)].set_xticklabels(['0', '0.6', '0.8', '0.9'])
 
     plt.tight_layout()
-    plt.savefig(datain + '/ICC_same_ses_time_nogsr-nogsr.png')
-    # plt.savefig(datain + '/ICC_diff_ses_time_nogsr-nogsr.png')
+    # plt.savefig('./Figure3_same_ses_time_nogsr-nogsr.png')
+    plt.savefig('./Figure3_diff_ses_time_nogsr-nogsr.png')
