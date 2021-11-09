@@ -42,11 +42,11 @@ The `config` folder contains all pipeline configuration files
     └── ROI_Schaefer1000
 ```
 
-- Update and run plot_fig1.py
+- Plot Fig. 1 using plot_fig1.py
 
 #### Figure 2
 
-- Update and run plot_fig2.py
+- Plot Fig. 2 using plot_fig2.py
 
 #### Figure 3
 
@@ -68,7 +68,9 @@ bash figure/3/run_ICC_I2C2.sh
 
 Outputs will be saved in a folder called `ICC_1000_All_pearson` (19k matrix)
 
-- Plot figures using plot_fig3_time.py and plot_fig3_gsr.py
+- Plot Fig. 3A using plot_fig3_time.py and plot_fig3_time.py
+
+- Plot Fig. 3B using plot_fig3_time.py and plot_fig3_gsr.py
 
 #### Figure 4
 
@@ -76,7 +78,13 @@ Outputs will be saved in a folder called `ICC_1000_All_pearson` (19k matrix)
 
 - Run corr.py and corr_harm.py to generate Pearson correlation
 
-- Plot figures using plot_fig4.ipynb
+- Plot Fig. 4 using plot_fig4.ipynb
+
+Notes: The `post-processing` folder for extra processing for several runs
+
+#### Figure 5
+
+- Plot Fig. 5 using plot_fig5.py
 
 Notes: The `post-processing` folder for extra processing for several runs
 
@@ -86,7 +94,21 @@ Notes: The `post-processing` folder for extra processing for several runs
 
 - Run abcd.py/ccs.py/fmriprep.py to generate correlation
 
-- Plot figures using plot_figs1.ipynb
+- Plot Fig. S1 using plot_figs1.ipynb
+
+#### Supplementary Figure 2
+
+- Run corr_fd.py to calculate FD correlation
+
+- Plot Fig. S2 using plot_figs2.ipynb
+
+#### Supplementary Figure 3
+
+- Plot Fig. S3 using plot_figs3.py
+
+#### Supplementary Figure 4
+
+- Plot Fig. S4 using plot_figs4.py
 
 
 Contributors: Xinhui Li, Lei Ai
