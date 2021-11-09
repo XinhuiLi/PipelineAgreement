@@ -8,9 +8,9 @@ The `config` folder contains all pipeline configuration files
 
 - minimal: pipeline configuration files for minimal preprocessing
 
-- end-to-end: pipeline configuration files for end-to-end preprocessing, including nuisance regression
+- fig4: pipeline configuration files for Fig. 4
 
-- figure4: pipeline configuration files for figure 4
+- figs3: pipeline configuration file for Fig. S3
 
 ### Visualization
 
