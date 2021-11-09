@@ -3,8 +3,10 @@ import math
 import numpy as np
 import nibabel as nb
 
-resolution = 'native' #'2mm'
 dataout = '/data3/cnl/xli/reproducibility/correlation'
+
+resolution = 'native' #'2mm'
+
 if resolution == '2mm':
     img3d = '/data3/cnl/xli/reproducibility/out/fmriprep/fmriprep_mni152_2mm/output/fmriprep/sub-0025427a/func/sub-0025427a_task-rest_run-1_space-MNI152NLin6Asym_res-2_desc-mean_brain_bold.nii.gz'
 else:
@@ -14,9 +16,18 @@ for s, subid in enumerate(range(27,57)):
     sub = 'sub-00254'+str(subid)+'a'
     print(sub)
 
-    corr2001_2006 = np.zeros( ( 91, 109, 91 ) )
-    corr2001_2009 = np.zeros( ( 91, 109, 91 ) )
-    corr2006_2009 = np.zeros( ( 91, 109, 91 ) )
+    if resolution == '2mm':
+        dimx = 91
+        dimy = 109
+        dimz = 91
+    else:
+        dimx = 54
+        dimy = 64
+        dimz = 54
+    
+    corr2001_2006 = np.zeros( ( dimx, dimy, dimz ) )
+    corr2001_2009 = np.zeros( ( dimx, dimy, dimz ) )
+    corr2006_2009 = np.zeros( ( dimx, dimy, dimz ) )
 
     if resolution == '2mm':
         t2001_path='/data3/cnl/xli/reproducibility/out/fmriprep/fmriprep_mni2004_2mm/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI1522004_res-2_desc-resampled_brain_bold_lpi.nii.gz'
@@ -31,9 +42,9 @@ for s, subid in enumerate(range(27,57)):
     t2006 = nb.load(t2006_path).get_data()
     t2009 = nb.load(t2009_path).get_data()
 
-    for x in range(91):
-        for y in range(109):
-            for z in range(91):
+    for x in range(dimx):
+        for y in range(dimy):
+            for z in range(dimz):
                 corr2001_2006[x, y, z] = np.corrcoef(t2001[x, y, z], t2006[x, y, z])[1,0]
                 if math.isnan(corr2001_2006[x,y,z]):
                     corr2001_2006[x, y, z] = 0
