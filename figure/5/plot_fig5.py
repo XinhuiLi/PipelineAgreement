@@ -1,5 +1,5 @@
-from ..utils import spatial_corr_ridgeplot
-from ..utils import ICC_ridgeplot
+from ..utils.utils import spatial_corr_ridgeplot
+from ..utils.utils import ICC_ridgeplot
 
 fc_handle=''
 simpleplot=False

@@ -18,9 +18,7 @@ The `config` folder contains all pipeline configuration files
 
 - Update extract_ROI.sh to create soft links for functional timeseries and run 3dROIstats
 
-- Update and run run_ICC_part1.sh
-
-- Run run_ICC_part2.sh
+- Run run_ICC.sh
     - Results will be saved in the folder All_new_ICC_Schaefer200/600/1000_aggreg
 
 - Organize folders as below
@@ -109,6 +107,10 @@ Notes: The `post-processing` folder for extra processing for several runs
 #### Supplementary Figure 4
 
 - Plot Fig. S4 using plot_figs4.py
+
+#### Supplementary Figure 5
+
+- Run corr_vol_ts.py to get voxel-wise timeseries correlation
 
 
 Contributors: Xinhui Li, Lei Ai
