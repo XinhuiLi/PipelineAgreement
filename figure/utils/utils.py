@@ -470,7 +470,7 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
     ridgeplot(df,atlases,outpath + '/Ridgeplot_ICC_'+'_'+'-'.join(pipelines)[0:90]+'_'+atlas+'.png',plotnameorder)
 
 
-def cute_ani():
-    '''This is a test function written by cute Ani
+def func():
+    '''This is a test function written by dear Anibal Sólon
     '''
     print('Hello Pikachu!')
