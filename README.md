@@ -4,7 +4,7 @@ Resources for pipeline harmonization paper
 
 ### Data Running
 
-The `config` folder contains all pipeline configuration files
+The `config` folder contains C-PAC pipeline configuration files
 
 - minimal: pipeline configuration files for minimal preprocessing
 
@@ -12,7 +12,23 @@ The `config` folder contains all pipeline configuration files
 
 - figs3: pipeline configuration file for Fig. S3
 
+To run C-PAC Docker container, use the command below:
+```
+docker run \
+-v <local data directory>:/bids_dataset \
+-v <local output directory>:/outputs \
+-v /tmp:/scratch \
+fcpindi/c-pac:release-v1.8.1 /bids_dataset /outputs participant \
+--pipeline_file <pipeline configuration file> \
+--save_working_dir
+```
+
+Replace `<local data directory>` and `<local output directory>` to your local directories, and replace `<pipeline configuration file>` to your pipeline configuration file path such as `/outputs/default_pipeline.yml`. For more details, please check C-PAC user documentation: https://fcp-indi.github.io/
+
+
 ### Visualization
+
+The `figure` folder contains code to plot figures in the paper
 
 #### Figure 1
 
@@ -113,4 +129,6 @@ Notes: The `post-processing` folder for extra processing for several runs
 - Run corr_vol_ts.py to get voxel-wise timeseries correlation
 
 
-Contributors: Xinhui Li, Lei Ai
+Contributors: [Xinhui Li](https://github.com/XinhuiLi), [Lei Ai](https://github.com/hahaai)
+
+Acknowledgment: Thank [Jon Clucas](https://github.com/shnizzedy) for code review and [Anibal Sólon](https://github.com/anibalsolon) for technical support.
