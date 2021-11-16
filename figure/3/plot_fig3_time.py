@@ -1,5 +1,3 @@
-############################################################################################################################################################################
-## load spatial correlaiotn and plot 
 import os
 import random
 import numpy as np
@@ -8,9 +6,9 @@ import scipy.stats as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-axis_tick_size=17
-lw_value=2
-to_sum = False#True
+agg_icc=True # whether aggregate ICC output or not, set it to 'True' for the first time and 'False' otherwise
+datain='ICC_1000_All_pearson' # path to ICC output from run_ICC.py
+scan_type='same' # 'same' for same data; 'diff' for test-retest data
 
 for corr_type in ['pearson']:
 
@@ -31,10 +29,6 @@ for corr_type in ['pearson']:
         kde = gaussian_kde(x, bw_method=bandwidth / x.std(ddof=1), **kwargs)
         return kde.evaluate(x_grid)
 
-    # datain='/data3/cnl/fmriprep/Lei_working/testing/ICC_Scan_duration/All_sessions/figures/ICC_1000_All_' + corr_type
-    datain='/Users/xinhui.li/Documents/reproducibility/XL/figure/3/ICC_1000_All_pearson_rank_eps'
-    # datain='/Users/xinhui.li/Documents/reproducibility/XL/figure/3/ICC_1000_All_pearson_no_rank_eps'
-
     def re_sample(x,y,x_grid):
         y_out=np.linspace(0, 0, len(x_grid))
 
@@ -54,11 +48,10 @@ for corr_type in ['pearson']:
     num_rand_times=10
     
     binnum=2000
-    # x_grid=np.linspace(0, 1.1, binnum) # TODO ask Lei: why?
     x_grid=np.linspace(0, 1, binnum)
 
-    # combine different random runs together first.
-    if to_sum:
+    # combine different random runs together
+    if agg_icc:
         for pl in range(0,num_pair):
             print(pl)
             for ses in range(1,4):
@@ -99,24 +92,24 @@ for corr_type in ['pearson']:
     diff_pipe_itv = 4
 
     for row in range(nrow):
-        '''
-        # same session
-        # no GSR vs no GSR
-        if row == 0:
-            pipelist = np.arange(same_pipe_same_scan_start_index, same_pipe_same_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, same scan, same pipe, [0, 3, 6, 9]
-        elif row == 1:
-            pipelist = np.arange(diff_pipe_same_scan_start_index, diff_pipe_same_scan_start_index+diff_pipe_lg, diff_pipe_itv) # no GSR vs no GSR, same scan, diff pipe, [12, 16, 20, 24, 28, 32]
-        '''
-        # different session
-        # no GSR vs no GSR
-        if row == 0:
-            pipelist = np.arange(same_pipe_diff_scan_start_index, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, diff scan, same pipe, [36, 39, 42, 45]
-        elif row == 1:
-            pipelist = np.arange(diff_pipe_diff_scan_start_index, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # no GSR vs no GSR, diff scan, diff pipe, [48, 52, 56, 60, 64, 68]
+        if scan_type == 'same':
+            # same session
+            # no GSR vs no GSR
+            if row == 0:
+                pipelist = np.arange(same_pipe_same_scan_start_index, same_pipe_same_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, same scan, same pipe, [0, 3, 6, 9]
+            elif row == 1:
+                pipelist = np.arange(diff_pipe_same_scan_start_index, diff_pipe_same_scan_start_index+diff_pipe_lg, diff_pipe_itv) # no GSR vs no GSR, same scan, diff pipe, [12, 16, 20, 24, 28, 32]
+        else:
+            # different session
+            # no GSR vs no GSR
+            if row == 0:
+                pipelist = np.arange(same_pipe_diff_scan_start_index, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, diff scan, same pipe, [36, 39, 42, 45]
+            elif row == 1:
+                pipelist = np.arange(diff_pipe_diff_scan_start_index, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # no GSR vs no GSR, diff scan, diff pipe, [48, 52, 56, 60, 64, 68]
         
         for ses in range(1,4):
             for i in [0.6,0.8,0.9]:
-                axs[row, (ses-1)].axvline(x=i, lw=lw_value, clip_on=False, color='lightgray')
+                axs[row, (ses-1)].axvline(x=i, lw=2, clip_on=False, color='lightgray')
 
         for num, pl in enumerate(pipelist):
             # set color
@@ -162,7 +155,7 @@ for corr_type in ['pearson']:
 
                 axs[row, (ses-1)].fill_between(x_grid, data_lb, data_up, color=color_plot, alpha=0.8)
                 axs[row, (ses-1)].plot(x_grid, datamean, linewidth=0.5, color='black')
-                axs[row, (ses-1)].tick_params(axis='both', which='major', labelsize=axis_tick_size)
+                axs[row, (ses-1)].tick_params(axis='both', which='major', labelsize=17)
 
                 axs[row, (ses-1)].set_ylim([-0.1,6]) # 5.2 for rank, 6 for no rank
 
@@ -172,5 +165,4 @@ for corr_type in ['pearson']:
                     axs[row, (ses-1)].set_xticklabels(['0', '0.6', '0.8', '0.9'])
 
     plt.tight_layout()
-    # plt.savefig('./Figure3_same_ses_time_nogsr-nogsr.png')
-    plt.savefig('./Figure3_diff_ses_time_nogsr-nogsr.png')
+    plt.savefig('./Figure3_'+scan_type+'_ses_time_nogsr-nogsr.png')

@@ -8,7 +8,7 @@ library(lme4)
 library(R.matlab)
 library(mgc)
 library(doParallel)  
-source('/Users/xinhui.li/Documents/reproducibility/LA/Reproducibility_Analysis/trace_only_unba.R')
+source('trace_only_unba.R')
 
 # a new differentt I2C2
 #source("https://neuroconductor.org/neurocLite.R")
@@ -290,7 +290,7 @@ iccplot <- function(data,outfile){
   
 }
 
-basefolder='/Users/xinhui.li/Documents/reproducibility/LA/Reproducibility_Analysis'
+basefolder='/root'
 
 num_roi=1000
 num_edge=num_roi*num_roi/2-num_roi/2

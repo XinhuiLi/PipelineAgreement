@@ -28,8 +28,8 @@ def cal_corr(path1, path2, run):
         sc.append(np.corrcoef(corr1_new,corr2_new)[0,1])
     np.save(os.path.join(out_path, run+'.npy'), sc)
 
-root_path = '/Users/xinhui.li/Documents/reproducibility/LA/Reproducibility_Analysis/ROI/ROI_Schaefer200/'
-out_path = '/Users/xinhui.li/Documents/reproducibility/reproducibility/figure/4/PearsonCorr'
+root_path = '/root/ROI/ROI_Schaefer200/'
+out_path = 'figure/4/PearsonCorr'
 
 # ABCD
 path1 = root_path + 'ABCD'

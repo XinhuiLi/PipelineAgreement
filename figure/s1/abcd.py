@@ -140,7 +140,3 @@ for num_sub, sub in enumerate(sub_list):
 
 print(corrs)
 np.save('/data3/cnl/xli/reproducibility/script/abcd_corrs.npy', corrs)
-
-# python /data3/cnl/CPAC_regtest_pack/corr_two_ts.py \
-# /data3/cnl/fmriprep/Lei_working/CPAC_XCP/ABCD/preprocessed/data/sub-0025427/ses-1/files/MNINonLinear/Results/task-rest01/task-rest01.nii.gz \
-# /data3/cnl/freesurfer/abcd-hcp_04-16-21/output/cpac_cpac_abcd-options/sub-0025427_ses-1/func/sub-0025427_ses-1_task-rest_run-1_space-template_desc-brain_bold.nii.gz

@@ -8,9 +8,6 @@ with open(sub_list_file) as f:
     lines = f.readlines()
     for line in lines:
         sub_list.append(line.strip('\n').replace('_', '-'))
-sub_list.remove('sub-000000')
-sub_list.remove('sub-5463599') # crash
-sub_list.remove('sub-5713772') # crash
 
 good_sub_list = []
 good_sub_list_file = '/data3/cnl/fmriprep/Lei_working/FD_testing/HBN_testing/good_30.txt'

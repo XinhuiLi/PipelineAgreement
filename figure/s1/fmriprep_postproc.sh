@@ -1,5 +1,5 @@
-cpac_dir=/data3/cnl/xli/reproducibility/out/cpac_fmriprep_v2
-fmriprep_dir=/data3/cnl/fmriprep/Lei_working/FINAL_preprocessed_2021/fmriprep_default
+cpac_dir=$CPAC_OUTPUT_DIR
+fmriprep_dir=$FMRIPREP_OUTPUT_DIR
 
 for ((k=27;k<57;k++)); do
     # anat mask

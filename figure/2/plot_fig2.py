@@ -452,19 +452,19 @@ if __name__=='__main__':
     simpleplot=False
     atlases=['200','600','1000']
 
-    wd_path='/Users/xinhui.li/Documents/reproducibility/LA/Reproducibility_Analysis'
+    wd_path='/root'
     base=wd_path+'/ROI'
 
     namechangedict={'cpac_default_v1.8':'CPAC:Default',
                     'fmriprep_default':'fMRIPrep',
-                    'cpac_fmriprep_v1.8_v2':'CPAC:fMRIPrep',
+                    'cpac_fmriprep_v1.8':'CPAC:fMRIPrep',
                     'ABCD':'abcd',
                     'cpac_abcd_v1.8':'CPAC:ABCD',
-                    'ccs_rerun':'CCS',
+                    'ccs':'CCS',
                     'cpac_ccs_v1.8':'CPAC:CCS',
                     'dpabi':'DPARSF'}
 
-    pipelines=[['cpac_default_v1.8','ABCD'], ['cpac_abcd_v1.8','ABCD'], ['cpac_default_v1.8','ccs_rerun'], ['cpac_ccs_v1.8','ccs_rerun'], ['cpac_default_v1.8','fmriprep_default'], ['cpac_fmriprep_v1.8_v2','fmriprep_default']]
+    pipelines=[['cpac_default_v1.8','ABCD'], ['cpac_abcd_v1.8','ABCD'], ['cpac_default_v1.8','ccs'], ['cpac_ccs_v1.8','ccs'], ['cpac_default_v1.8','fmriprep_default'], ['cpac_fmriprep_v1.8','fmriprep_default']]
 
     spatial_corr_ridgeplot(base,base.replace('ROI','figures'),pipelines,atlases,namechangedict,fc_handle,simpleplot,'pearson')
     ICC_ridgeplot(base.replace('ROI','figures'),base.replace('ROI','figures'),pipelines,atlases,namechangedict,simpleplot)
