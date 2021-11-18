@@ -1,13 +1,11 @@
 import os
-import random
 import numpy as np
-import pandas as pd
 import scipy.stats as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 
 agg_icc=True # whether aggregate ICC output or not, set it to 'True' for the first time and 'False' otherwise
-datain='ICC_1000_All_pearson' # path to ICC output from run_ICC.py
+datain=os.environ.get('RUN_ICC_OUTPUT') # path to ICC output from run_ICC.py
 scan_type='same' # 'same' for same data; 'diff' for test-retest data
 
 for corr_type in ['pearson']:

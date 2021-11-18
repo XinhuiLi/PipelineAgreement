@@ -1,6 +1,5 @@
-DATA_INPUT_DIR=''
-DATA_OUTPUT_DIR=''
-WORKING_DIR=''
+# Please define the environment variables DATA_INPUT_DIR, DATA_OUTPUT_DIR, WORKING_DIR
+# in .pipelineharmonizationrc or in this script
 
 datain=$DATA_INPUT_DIR
 dataout=$DATA_OUTPUT_DIR
@@ -45,7 +44,7 @@ done
 
 ############## extract ROIs
 datain=$DATA_OUTPUT_DIR
-commandlist=$DATA_OUTPUT_DIR'/Shaefer_ROI_commands.txt'
+commandlist=$DATA_OUTPUT_DIR'/Schaefer_ROI_commands.txt'
 rm $commandlist
 
 for num_rois in 200;do

@@ -1,4 +1,5 @@
-WORKING_DIR=''
+# Please define the environment variable WORKING_DIR 
+# in .pipelineharmonizationrc or in this script
 
 for atlas in 200 600 1000;do
 

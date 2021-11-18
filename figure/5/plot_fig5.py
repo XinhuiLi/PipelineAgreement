@@ -1,3 +1,4 @@
+import os
 from ..utils.utils import spatial_corr_ridgeplot
 from ..utils.utils import ICC_ridgeplot
 
@@ -5,7 +6,7 @@ fc_handle=''
 simpleplot=False
 atlases=['200','600','1000']
 
-wd_path='/root'
+wd_path=os.environ.get("BASEFOLDER")
 base=wd_path+'/ROI'
 
 namechangedict={'fmriprep_mni2009_2mm':'fMRIPrep MNI2009 2mm',

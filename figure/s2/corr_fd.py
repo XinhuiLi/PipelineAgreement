@@ -3,27 +3,27 @@ import numpy as np
 from scipy.stats import pearsonr
 
 sub_list = []
-sub_list_file = '/data3/cnl/fmriprep/Lei_working/FD_testing/HBN_testing/sublist.txt'
+sub_list_file = f'{os.environ.get("FD_DIR")}/sublist.txt'
 with open(sub_list_file) as f:
     lines = f.readlines()
     for line in lines:
         sub_list.append(line.strip('\n').replace('_', '-'))
 
-good_sub_list = []
-good_sub_list_file = '/data3/cnl/fmriprep/Lei_working/FD_testing/HBN_testing/good_30.txt'
-with open(good_sub_list_file) as f:
+low_motion_sub_list = []
+low_motion_sub_list_file = f'{os.environ.get("FD_DIR")}/good_30.txt'
+with open(low_motion_sub_list_file) as f:
     lines = f.readlines()
     for line in lines:
-        good_sub_list.append(line.strip('\n').replace('_', '-'))
+        low_motion_sub_list.append(line.strip('\n').replace('_', '-'))
 
-bad_sub_list = []
+high_motion_sub_list = []
 for sub in sub_list:
-    if sub not in good_sub_list:
-        bad_sub_list.append(sub)
+    if sub not in low_motion_sub_list:
+        high_motion_sub_list.append(sub)
 
 print('subject list length: ' + str(len(sub_list)))
-print('good subject list length: ' + str(len(good_sub_list)))
-print('bad subject list length: ' + str(len(bad_sub_list)))
+print('low motion subject list length: ' + str(len(low_motion_sub_list)))
+print('high motion subject list length: ' + str(len(high_motion_sub_list)))
 
 def get_fd_corr(sub_list, type, name):
 
@@ -99,10 +99,10 @@ def get_fd_corr(sub_list, type, name):
         fsl[4, i], _ = pearsonr( fsl_median[i], fsl_last[i] )
         fsl[5, i], _ = pearsonr( fsl_first[i], fsl_last[i] )
     
-    np.save('/data3/cnl/xli/reproducibility/script/HBN_AFNI_FD_'+type+'_'+name+'.npy', afni)
-    np.save('/data3/cnl/xli/reproducibility/script/HBN_FSL_FD_'+type+'_'+name+'.npy', fsl)
+    np.save(f'{os.environ.get("SCRIPT_DIR")}/HBN_AFNI_FD_'+type+'_'+name+'.npy', afni)
+    np.save(f'{os.environ.get("SCRIPT_DIR")}/HBN_FSL_FD_'+type+'_'+name+'.npy', fsl)
 
-get_fd_corr(good_sub_list, 'power', 'good')
-get_fd_corr(bad_sub_list, 'power', 'bad')
-get_fd_corr(good_sub_list, 'jenkinson', 'good')
-get_fd_corr(bad_sub_list, 'jenkinson', 'bad')
+get_fd_corr(low_motion_sub_list, 'power', 'low_motion')
+get_fd_corr(high_motion_sub_list, 'power', 'high_motion')
+get_fd_corr(low_motion_sub_list, 'jenkinson', 'low_motion')
+get_fd_corr(high_motion_sub_list, 'jenkinson', 'high_motion')

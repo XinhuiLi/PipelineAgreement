@@ -1,5 +1,3 @@
-
-
 library(ICC)
 library(gplots)
 library(gridGraphics)
@@ -290,7 +288,7 @@ iccplot <- function(data,outfile){
   
 }
 
-basefolder='/root'
+basefolder <- Sys.getenv("BASEFOLDER")
 
 num_roi=1000
 num_edge=num_roi*num_roi/2-num_roi/2

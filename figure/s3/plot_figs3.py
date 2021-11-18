@@ -1,3 +1,4 @@
+import os
 from ..utils.utils import spatial_corr_ridgeplot
 from ..utils.utils import ICC_ridgeplot
 
@@ -5,7 +6,7 @@ fc_handle=''
 simpleplot=False
 atlases=['200','600','1000']
 
-base='/root/ROI'
+base=f'{os.environ.get("BASEFOLDER")}/ROI'
 
 namechangedict={'cpac_default_v1.8':'CPAC:Default',
                 'fmriprep_default':'fMRIPrep',

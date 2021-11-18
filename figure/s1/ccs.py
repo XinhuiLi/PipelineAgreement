@@ -163,4 +163,4 @@ for num_sub, sub in enumerate(sub_list):
             corrs[num_sub][num_var+5] = round(corr, 3)
 
 print(corrs)
-np.save('/data3/cnl/xli/reproducibility/script/ccs_corrs.npy', corrs)
+np.save(f'{os.environ.get("SCRIPT_DIR")}/ccs_corrs.npy', corrs)

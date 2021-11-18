@@ -464,7 +464,7 @@ if __name__=='__main__':
     simpleplot=False
     atlases=['200','600','1000']
 
-    wd_path='/root'
+    wd_path=os.environ.get("BASEFOLDER")
     base=wd_path+'/ROI'
 
     namechangedict={'v181-HBN-default':'CPAC:Default',

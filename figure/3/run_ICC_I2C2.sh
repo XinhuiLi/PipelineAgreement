@@ -1,4 +1,5 @@
-WORKING_DIR=''
+# Please define the environment variable WORKING_DIR 
+# in .pipelineharmonizationrc or in this script
 
 ## create data for ICC and I2C2
 python3.8 $WORKING_DIR/ICC_a.py

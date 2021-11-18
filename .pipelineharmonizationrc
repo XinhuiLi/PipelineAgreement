@@ -1,0 +1,16 @@
+#!/bin/bash
+# Set these variables and run `source .pipelineharmonizationrc` prior to running PipelineHarmonization scripts
+export PH_SERVER_ROOT="/data3/cnl"  # folder on server containing relevant files
+export LOCAL_ROOT="/Users/xinhui.li/Documents/reproducibility"  # folder on local machine containing relevant files
+export BASEFOLDER="${LOCAL_ROOT}/LA/Reproducibility_Analysis"
+export LOCAL_OUTPUT_DIRECTORY="${LOCAL_ROOT}"
+export DATA_INPUT_DIR="${PH_SERVER_ROOT}/xli/reproducibility/out"
+export SCRIPT_DIR="${PH_SERVER_ROOT}/xli/reproducibility/script"
+export LOCAL_DATA_DIRECTORY="${DATA_INPUT_DIR}"
+export DATA_OUTPUT_DIR="${PH_SERVER_ROOT}/fmriprep/Lei_working/Finalizing/Minimal/data"  # where to save output data on server
+export WORKING_DIR="${PH_SERVER_ROOT}/fmriprep/Lei_working/Finalizing/Minimal/"  # where to store working files
+export ROI_BASE="${PH_SERVER_ROOT}/fmriprep/Lei_working/testing/ICC_Scan_duration/All_sessions"
+export RUN_ICC_OUTPUT="ICC_1000_All_pearson"
+export CPAC_OUTPUT_DIR="${DATA_INPUT_DIR}/cpac_fmriprep_v2"  # C-PAC outputs
+export FMRIPREP_OUTPUT_DIR="${PH_SERVER_ROOT}/fmriprep/Lei_working/FINAL_preprocessed_2021/fmriprep_default"  # fmriprep outputs
+export FD_DIR="${PH_SERVER_ROOT}/fmriprep/Lei_working/FD_testing/HBN_testing"  # where to store subject list to test motion correction impact

@@ -30,6 +30,14 @@ Replace `<local data directory>` and `<local output directory>` to your local di
 
 The `figure` folder contains code to plot figures in the paper
 
+Before running:
+
+1. Update .pipelineharmonizationrc with the applicable paths for your data.
+
+2. Run source .pipelineharmonizationrc before running any scripts.
+
+3. Run scripts (and IDEs like RStudio or Jupyter) from a terminal in which you've sourced .pipelineharmonizationrc
+
 #### Figure 1
 
 - Update extract_ROI.sh to create soft links for functional timeseries and run 3dROIstats

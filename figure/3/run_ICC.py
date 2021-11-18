@@ -640,7 +640,7 @@ simpleplot=False
 atlases=['200',]
 bootstrapping_ci=False
 bootstrapping_average=False
-base='/ROI'
+base=f'{os.environ.get("ROI_BASE")}/ROI'
 
 allpl=sum(pipelines_list, [])
 allpl=list(dict.fromkeys(allpl))
