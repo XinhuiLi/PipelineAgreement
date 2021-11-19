@@ -92,8 +92,10 @@ for num_sub, sub in enumerate(sub_list):
                 path2+'/working/cpac_sub-'+sub+'a_ses-1/resample_anat_brain_mask_in_standard_125/wmparc_maths_fill_holes_maths_warp_warp_warp.nii.gz',
                 glob.glob(path2+'/working/cpac_sub-'+sub+'a_ses-1/_*/*mcflirt_122/*par')[0], 
                 # glob.glob(path2+'/sub-'+sub+'/output/*/sub-'+sub+ses+'_ses-1/frame_wise_displacement_power/*/FD.1D')[0], # TODO find FD, only max/rel disp
+                # Note: this template is from DCAN-HCP GitHub: https://github.com/DCAN-Labs/DCAN-HCP/tree/master/global/templates/MNI152_T1_1mm_brain.nii.gz
                 '/data3/cnl/freesurfer/DCAN-HCP/global/templates/MNI152_T1_1mm_brain.nii.gz', # ABCD anat template
                 '/data3/cnl/freesurfer/DCAN-HCP/global/templates/MNI152_T1_1mm_brain.nii.gz', # C-PAC anat template
+                # Note: this template is from FSL standard template distribution
                 '/usr/local/fsl/data/standard/MNI152_T1_2mm_brain.nii.gz', # ABCD func template on Lisa
                 '/usr/local/fsl/data/standard/MNI152_T1_2mm_brain.nii.gz', # C-PAC func template on Lisa
                 # '/usr/share/fsl/5.0/data/standard/MNI152_T1_2mm_brain.nii.gz', # ABCD func template on Ned
