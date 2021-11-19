@@ -1,14 +1,25 @@
 #!/bin/bash
 # Set these variables and run `source .pipelineharmonizationrc` prior to running PipelineHarmonization scripts
+# $PH_SERVER_ROOT is the only variable here that absolutely needs to be changed to run these scripts (unless you happen to have `/data3/cnl` as your root directory on the server you're using)
+# You can change any of these variables to adjust where generated files are stored
+
 
 ## Files on local machine
-export LOCAL_ROOT="/Users/xinhui.li/Documents/reproducibility"  # folder on local machine containing relevant files
+### folder on local machine containing relevant files
+export LOCAL_ROOT="${HOME}/Documents/reproducibility"
+#### no need to set these
+#### these are populated based on the variable above
+#### (unless you want different organization)
 export LOCAL_OUTPUT_DIRECTORY="${LOCAL_ROOT}"
 export BASEFOLDER="${LOCAL_ROOT}/LA/Reproducibility_Analysis"
 
 
 ## Files on server
-export PH_SERVER_ROOT="/data3/cnl"  # folder on server containing relevant files
+### folder on server containing relevant files
+export PH_SERVER_ROOT="/data3/cnl"
+#### no need to set these
+#### these are populated based on the variable above
+#### (unless you want different organization)
 export PH_SERVER_DATA_ROOT="${PH_SERVER_ROOT}/xli/reproducibility"
 export SCRIPT_DIR="${PH_SERVER_DATA_ROOT}/script"
 export DATA_INPUT_DIR="${PH_SERVER_DATA_ROOT}/out"
