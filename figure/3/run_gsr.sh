@@ -1,6 +1,6 @@
 # default output
-input=/data3/cnl/xli/reproducibility/out/cpac_default_all/output/cpac_cpac-default-pipeline
-output=/data3/cnl/xli/reproducibility/out/gsr/cpac_default_all
+input=${DATA_INPUT_DIR}/cpac_default_all/output/cpac_cpac-default-pipeline
+output=${DATA_INPUT_DIR}/gsr/cpac_default_all
 for ((k=27;k<57;k++));do
     for ses in 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j';do
         sub='sub-00254'${k}${ses}
@@ -15,8 +15,8 @@ for ((k=27;k<57;k++));do
 done
 
 # fMRIPrep-options output
-input=/data3/cnl/xli/reproducibility/out/cpac_fmriprep_all_v2/output/cpac_cpac_fmriprep-options
-output=/data3/cnl/xli/reproducibility/out/gsr/cpac_fmriprep_all
+input=${DATA_INPUT_DIR}/cpac_fmriprep_all_v2/output/cpac_cpac_fmriprep-options
+output=${DATA_INPUT_DIR}/gsr/cpac_fmriprep_all
 for ((k=27;k<57;k++));do
     for ses in 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j';do
         sub='sub-00254'${k}${ses}
@@ -38,8 +38,8 @@ for ((k=27;k<57;k++));do
 done
 
 # ABCD-options output
-input=/data3/cnl/xli/reproducibility/out/cpac_abcd_all/output/cpac_cpac_abcd-options
-output=/data3/cnl/xli/reproducibility/out/gsr/cpac_abcd_all
+input=${DATA_INPUT_DIR}/cpac_abcd_all/output/cpac_cpac_abcd-options
+output=${DATA_INPUT_DIR}/gsr/cpac_abcd_all
 for ((k=27;k<57;k++));do
     for ses in 'a' 'b' 'c' 'd' 'e' 'f' 'g' 'h' 'i' 'j';do
         sub='sub-00254'${k}${ses}
@@ -61,8 +61,8 @@ for ((k=27;k<57;k++));do
 done
 
 # CCS-options output
-input=/data3/cnl/xli/reproducibility/out/cpac_ccs_all/output/cpac_cpac_ccs-options
-output=/data3/cnl/xli/reproducibility/out/gsr/cpac_ccs_all
+input=${DATA_INPUT_DIR}/cpac_ccs_all/output/cpac_cpac_ccs-options
+output=${DATA_INPUT_DIR}/gsr/cpac_ccs_all
 for ((k=27;k<57;k++));do
     sub='sub-00254'${k}
     j=0

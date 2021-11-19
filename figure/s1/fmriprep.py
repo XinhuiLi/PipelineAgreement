@@ -1,9 +1,12 @@
 import glob
 import numpy as np
+import os
 import pandas as pd 
 import nibabel as nb
 import scipy.io as sio
 from scipy.stats import pearsonr
+
+PH_SERVER_ROOT = os.environ.get('PH_SERVER_ROOT')
 
 def zscore(data, axis):
     data -= data.mean(axis=axis, keepdims=True)
@@ -49,8 +52,8 @@ def get_motion_params(file, pipeline = 'cpac'):
 
     return data
 
-path1 = '/data3/cnl/fmriprep/Lei_working/FINAL_preprocessed_2021/fmriprep_default'
-path2 = '/data3/cnl/xli/reproducibility/out/cpac_fmriprep_v2'
+path1 = os.environ.get('FMRIPREP_OUTPUT_DIR')
+path2 = os.environ.get('CPAC_OUTPUT_DIR')
 
 sub_list = range(25427,25457)
 sub_list.remove(25430)
@@ -86,11 +89,11 @@ for num_sub, sub in enumerate(sub_list):
                 path2+'/working/cpac_sub-'+sub+'a_ses-1/segment_62/segment_pveseg_wm.nii.gz',
                 path2+'/output/cpac_cpac_fmriprep-options/sub-'+sub+'a_ses-1/func/sub-'+sub+'a_ses-1_task-rest_run-1_space-bold_desc-brain_mask.nii.gz',
                 glob.glob(path2+'/working/cpac_sub-'+sub+'a_ses-1/_*/*mcflirt_97/*par')[0],
-                '/data3/cnl/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-01_T1w_reference_ss.nii.gz',
+                f'{PH_SERVER_ROOT}/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-01_T1w_reference_ss.nii.gz',
                 # path1+'/working/fmriprep_wf/single_subject_'+sub+'a_wf/anat_preproc_wf/anat_derivatives_wf/_in_tuple_MNI152NLin2009cAsym.resnative/gen_ref/tpl-MNI152NLin2009cAsym_res-01_T1w_reference.nii.gz', # fMRIPrep anat template
-                '/data3/cnl/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-01_desc-brain_T1w.nii.gz', # C-PAC anat template
-                '/data3/cnl/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-02_T1w_reference_ss.nii.gz', # fMRIPrep func template
-                '/data3/cnl/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-02_T1w_reference_ss.nii.gz', # C-PAC func template
+                f'{PH_SERVER_ROOT}/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-01_desc-brain_T1w.nii.gz', # C-PAC anat template
+                f'{PH_SERVER_ROOT}/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-02_T1w_reference_ss.nii.gz', # fMRIPrep func template
+                f'{PH_SERVER_ROOT}/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-02_T1w_reference_ss.nii.gz', # C-PAC func template
                 path2+'/output/cpac_cpac_fmriprep-options/sub-'+sub+'a_ses-1/anat/sub-'+sub+'a_ses-1_space-template_desc-brain_T1w.nii.gz', # C-PAC anat to standard
                 path2+'/output/cpac_cpac_fmriprep-options/sub-'+sub+'a_ses-1/func/sub-'+sub+'a_ses-1_task-rest_run-1_space-template_desc-mean_bold.nii.gz'] # C-PAC func to standard
 
@@ -130,6 +133,6 @@ for num_sub, sub in enumerate(sub_list):
             corrs[num_sub][num_var+5] = round(corr, 3)
 
 print(corrs)
-np.save('/data3/cnl/xli/reproducibility/script/fmriprep_corrs.npy', corrs)
+np.save(f'{os.environ.get("SCRIPT_DIR")}/fmriprep_corrs.npy', corrs)
 
-# 3dSkullStrip -input /data3/cnl/fmriprep/Lei_working/FINAL_preprocessed_2021/fmriprep_default/working/fmriprep_wf/single_subject_0025427a_wf/anat_preproc_wf/anat_derivatives_wf/_in_tuple_MNI152NLin2009cAsym.resnative/gen_ref/tpl-MNI152NLin2009cAsym_res-01_T1w_reference.nii.gz -prefix /data3/cnl/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-01_T1w_reference_ss.nii.gz
+# 3dSkullStrip -input ${FMRIPREP_OUTPUT_DIR}/working/fmriprep_wf/single_subject_0025427a_wf/anat_preproc_wf/anat_derivatives_wf/_in_tuple_MNI152NLin2009cAsym.resnative/gen_ref/tpl-MNI152NLin2009cAsym_res-01_T1w_reference.nii.gz -prefix ${PH_SERVER_ROOT}/fmriprep/cpac_run/Template/fmriprep_template/tpl-MNI152NLin2009cAsym_res-01_T1w_reference_ss.nii.gz

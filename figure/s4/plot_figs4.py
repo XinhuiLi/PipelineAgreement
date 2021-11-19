@@ -201,7 +201,7 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
             # put them all together, load each pipeline file and calcuate calrelaiton and give it a different name.
             for pl in pipelines:
                 datafolder = base +'/ROI_Schaefer' + atlas + '/' + pl
-                #/data3/cnl/fmriprep/Lei_working/CPAC_XCP/CPAC_aggre_output/sub-0025427a_ses-1_bandpassed_demeaned_filtered_antswarp_cc200.1D
+                #${PH_SERVER_WORKING_ROOT}/CPAC_XCP/CPAC_aggre_output/sub-0025427a_ses-1_bandpassed_demeaned_filtered_antswarp_cc200.1D
                 cpacfile=datafolder + '/' + sub
                 data=np.genfromtxt(cpacfile)
                 data=data.transpose()

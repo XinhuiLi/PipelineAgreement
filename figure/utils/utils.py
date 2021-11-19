@@ -203,7 +203,7 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
             for pl in pipelines:
                 datafolder = base +'/ROI_Schaefer' + atlas + '/' + pl
                 # cpacdefault24
-                #/data3/cnl/fmriprep/Lei_working/CPAC_XCP/CPAC_aggre_output/sub-0025427a_ses-1_bandpassed_demeaned_filtered_antswarp_cc200.1D
+                #${PH_SERVER_WORKING_ROOT}/CPAC_XCP/CPAC_aggre_output/sub-0025427a_ses-1_bandpassed_demeaned_filtered_antswarp_cc200.1D
                 cpacfile=datafolder + '/sub-00' + str(basesub+i) + 'a.1D'
                 data=np.genfromtxt(cpacfile)
                 if data.shape[0] != 295:

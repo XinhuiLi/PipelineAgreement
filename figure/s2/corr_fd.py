@@ -27,7 +27,7 @@ print('high motion subject list length: ' + str(len(high_motion_sub_list)))
 
 def get_fd_corr(sub_list, type, name):
 
-    run_path = '/data3/cnl/sgia/XinMotion/runs/'
+    run_path = f'{os.environ.get("PH_SERVER_ROOT")}/sgia/XinMotion/runs/'
     afni = 'v181-MotionVariation'
     afni_last_folder = 'v181-MotionVariation-last'
     fsl = 'v181-MotionVariation-MC'
