@@ -2,10 +2,14 @@ import os
 import glob
 import nibabel as nb
 
-orig_path = '/data3/cnl/xli/reproducibility/out/source_of_var'
-output_data_path = '/data3/cnl/xli/reproducibility/analysis/data'
-output_roi_path = '/data3/cnl/xli/reproducibility/analysis/ROI200'
-command_list = '/data3/cnl/xli/reproducibility/analysis/Schaefer_ROI_commands.txt'   
+DATA_INPUT_DIR = os.environ.get('DATA_INPUT_DIR')
+DATA_OUTPUT_DIR = os.environ.get('DATA_OUTPUT_DIR')
+PH_SERVER_WORKING_ROOT = os.environ.get('PH_SERVER_WORKING_ROOT')
+
+orig_path = f'{DATA_INPUT_DIR}source_of_var'
+output_data_path = f'{DATA_OUTPUT_DIR}/data'
+output_roi_path = f'{DATA_OUTPUT_DIR}/ROI200'
+command_list = f'{DATA_OUTPUT_DIR}/Schaefer_ROI_commands.txt'
 
 cmd = 'rm %s' % (command_list)
 os.system(cmd)
@@ -45,9 +49,9 @@ for run in run_list:
         dim = nb.load(atlas_bold).get_data().shape
 
         for num_roi in [200]: # , 600, 1000
-            mni2004_2mm = '/data3/cnl/fmriprep/Lei_working/Finalizing/Schaefer_Atlas/Schaefer2018_'+str(num_roi)+'Parcels_7Networks_order_FSLMNI152_2mm.nii.gz'
-            mni2004_3mm = '/data3/cnl/fmriprep/Lei_working/Finalizing/Schaefer_Atlas/Schaefer2018_'+str(num_roi)+'Parcels_7Networks_order_FSLMNI152_3mm.nii.gz'
-            mni2009 = '/data3/cnl/fmriprep/Lei_working/Finalizing/Schaefer_Atlas/Schaefer2018_'+str(num_roi)+'Parcels_7Networks_order_FSLMNI152_2mm_NLin2009cAsym.nii.gz' # RPI
+            mni2004_2mm = f'{PH_SERVER_WORKING_ROOT}/Finalizing/Schaefer_Atlas/Schaefer2018_'+str(num_roi)+'Parcels_7Networks_order_FSLMNI152_2mm.nii.gz'
+            mni2004_3mm = f'{PH_SERVER_WORKING_ROOT}/Finalizing/Schaefer_Atlas/Schaefer2018_'+str(num_roi)+'Parcels_7Networks_order_FSLMNI152_3mm.nii.gz'
+            mni2009 = f'{PH_SERVER_WORKING_ROOT}/Finalizing/Schaefer_Atlas/Schaefer2018_'+str(num_roi)+'Parcels_7Networks_order_FSLMNI152_2mm_NLin2009cAsym.nii.gz' # RPI
 
             if dim == (91, 109, 91):
                 mask = mni2004_2mm # MNI 2004 2mm

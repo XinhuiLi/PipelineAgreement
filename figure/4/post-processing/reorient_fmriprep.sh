@@ -1,8 +1,8 @@
-from_fmriprep_to_ccs=/data3/cnl/xli/reproducibility/analysis/data/from_fmriprep_to_ccs/anat_reg
-output_path=/data3/cnl/xli/reproducibility/analysis/data/from_fmriprep_to_ccs/anat_reg_rpi
-roi_path=/data3/cnl/xli/reproducibility/analysis/ROI200/from_fmriprep_to_ccs/anat_reg_rpi
-mni2009=/data3/cnl/fmriprep/Lei_working/Finalizing/Schaefer_Atlas/Schaefer2018_200Parcels_7Networks_order_FSLMNI152_2mm_NLin2009cAsym.nii.gz
-mni2009rpi=/data3/cnl/fmriprep/Lei_working/Finalizing/Schaefer_Atlas/Schaefer2018_200Parcels_7Networks_order_FSLMNI152_2mm_NLin2009cAsym_rpi.nii.gz
+from_fmriprep_to_ccs=${PH_SERVER_DATA_ROOT}/analysis/data/from_fmriprep_to_ccs/anat_reg
+output_path=${PH_SERVER_DATA_ROOT}/analysis/data/from_fmriprep_to_ccs/anat_reg_rpi
+roi_path=${PH_SERVER_DATA_ROOT}/analysis/ROI200/from_fmriprep_to_ccs/anat_reg_rpi
+mni2009=${PH_SERVER_WORKING_ROOT}/Finalizing/Schaefer_Atlas/Schaefer2018_200Parcels_7Networks_order_FSLMNI152_2mm_NLin2009cAsym.nii.gz
+mni2009rpi=${PH_SERVER_WORKING_ROOT}/Finalizing/Schaefer_Atlas/Schaefer2018_200Parcels_7Networks_order_FSLMNI152_2mm_NLin2009cAsym_rpi.nii.gz
 
 for ((k=27;k<57;k++));do
     sub='sub-00254'$k'a'

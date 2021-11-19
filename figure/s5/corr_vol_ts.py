@@ -3,7 +3,8 @@ import subprocess
 import numpy as np
 import nibabel as nb
 
-dataout = '/data3/cnl/xli/reproducibility/3dcorrelation'
+DATA_INPUT_DIR = os.environ.get("DATA_INPUT_DIR")
+dataout = f'{os.environ.get("PH_SERVER_DATA_ROOT")}/3dcorrelation'
 resolution = 'native' #'2mm'
 
 mean = np.zeros( (3, 30) )
@@ -15,13 +16,13 @@ for s, subid in enumerate(range(27,57)):
     print(sub)
 
     if resolution == '2mm':
-        t2001='/data3/cnl/xli/reproducibility/out/fmriprep/fmriprep_mni2004_2mm/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI1522004_res-2_desc-brain_bold.nii.gz'
-        t2006='/data3/cnl/xli/reproducibility/out/fmriprep/fmriprep_mni152_2mm/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI152NLin6Asym_res-2_desc-brain_bold.nii.gz'
-        t2009='/data3/cnl/xli/reproducibility/out/fmriprep/fmriprep_mni2009_2mm/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI152NLin2009cAsym_res-2_desc-brain_bold.nii.gz'
+        t2001=f'{DATA_INPUT_DIR}/fmriprep/fmriprep_mni2004_2mm/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI1522004_res-2_desc-brain_bold.nii.gz'
+        t2006=f'{DATA_INPUT_DIR}/fmriprep/fmriprep_mni152_2mm/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI152NLin6Asym_res-2_desc-brain_bold.nii.gz'
+        t2009=f'{DATA_INPUT_DIR}/fmriprep/fmriprep_mni2009_2mm/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI152NLin2009cAsym_res-2_desc-brain_bold.nii.gz'
     else:
-        t2001='/data3/cnl/xli/reproducibility/out/fmriprep/fmriprep_mni2004_native/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI1522004_desc-brain_bold.nii.gz'
-        t2006='/data3/cnl/xli/reproducibility/out/fmriprep/fmriprep_mni152_native/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI152NLin6Asym_desc-brain_bold.nii.gz'
-        t2009='/data3/cnl/fmriprep/Lei_working/FINAL_preprocessed_2021/fmriprep_default/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI152NLin2009cAsym_desc-brain_bold.nii.gz'
+        t2001=f'{DATA_INPUT_DIR}/fmriprep/fmriprep_mni2004_native/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI1522004_desc-brain_bold.nii.gz'
+        t2006=f'{DATA_INPUT_DIR}/fmriprep/fmriprep_mni152_native/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI152NLin6Asym_desc-brain_bold.nii.gz'
+        t2009=f'{FMRIPREP_OUTPUT_DIR}/output/fmriprep/'+sub+'/func/'+sub+'_task-rest_run-1_space-MNI152NLin2009cAsym_desc-brain_bold.nii.gz'
 
     # resample 2001 to 2006
     t2001_in_2006 = t2001.replace('brain_bold', 'brain_bold_2006')
