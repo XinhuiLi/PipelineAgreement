@@ -1,16 +1,12 @@
-############################################################################################################################################################################
-## load spatial correlaiotn and plot 
 import os
-import random
 import numpy as np
-import pandas as pd
 import scipy.stats as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-axis_tick_size=17
-lw_value=2
-to_sum = False#True
+agg_icc=True # whether aggregate ICC output or not, set it to 'True' for the first time and 'False' otherwise
+datain=os.environ.get('RUN_ICC_OUTPUT') # path to ICC output from run_ICC.py
+scan_type='same' # 'same' for same data; 'diff' for test-retest data
 
 for corr_type in ['pearson']:
 
@@ -31,10 +27,6 @@ for corr_type in ['pearson']:
         kde = gaussian_kde(x, bw_method=bandwidth / x.std(ddof=1), **kwargs)
         return kde.evaluate(x_grid)
 
-    #datain='/data3/cnl/fmriprep/Lei_working/testing/ICC_Scan_duration/All_sessions/figures/ICC_1000_All_' + corr_type
-    datain='/Users/xinhui.li/Documents/reproducibility/XL/figure/3/ICC_1000_All_pearson_rank_eps'
-    # datain='/Users/xinhui.li/Documents/reproducibility/XL/figure/3/ICC_1000_All_pearson_no_rank_eps'
-
     def re_sample(x,y,x_grid):
         y_out=np.linspace(0, 0, len(x_grid))
 
@@ -54,11 +46,10 @@ for corr_type in ['pearson']:
     num_rand_times=10
     
     binnum=2000
-    # x_grid=np.linspace(0, 1.1, binnum) # TODO ask Lei: why?
     x_grid=np.linspace(0, 1, binnum)
 
-    # combine different random runs together first.
-    if to_sum:
+    # combine different random runs together
+    if agg_icc:
         for pl in range(0,num_pair):
             print(pl)
             for ses in range(1,4):
@@ -101,50 +92,51 @@ for corr_type in ['pearson']:
 
         for ses in range(1,4):
             for i in [0.6,0.8,0.9]:
-                axs[row, (ses-1)].axvline(x=i, lw=lw_value, clip_on=False, color='lightgray')
+                axs[row, (ses-1)].axvline(x=i, lw=2, clip_on=False, color='lightgray')
 
         for col in range(ncol):
             
-            # same scan
-            if col == 0:
-                # no GSR vs no GSR
-                if row == 0:
-                    pipelist = np.arange(same_pipe_same_scan_start_index, same_pipe_same_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, same scan, same pipe, [0, 3, 6, 9]
-                elif row == 1:
-                    pipelist = np.arange(diff_pipe_same_scan_start_index, diff_pipe_same_scan_start_index+diff_pipe_lg, diff_pipe_itv) # no GSR vs no GSR, same scan, diff pipe, [12, 16, 20, 24, 28, 32]
-            elif col == 1:
-                # GSR vs GSR
-                if row == 0:
-                    pipelist = np.arange(same_pipe_same_scan_start_index+1, same_pipe_same_scan_start_index+same_pipe_lg, same_pipe_itv) # GSR vs GSR, same scan, same pipe, [1,  4,  7, 10]
-                elif row == 1:
-                    pipelist = np.arange(diff_pipe_same_scan_start_index+1, diff_pipe_same_scan_start_index+diff_pipe_lg, diff_pipe_itv) # GSR vs GSR, same scan, diff pipe, [13, 17, 21, 25, 29, 33]
+            if scan_type == 'same':
+                # same scan
+                if col == 0:
+                    # no GSR vs no GSR
+                    if row == 0:
+                        pipelist = np.arange(same_pipe_same_scan_start_index, same_pipe_same_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, same scan, same pipe, [0, 3, 6, 9]
+                    elif row == 1:
+                        pipelist = np.arange(diff_pipe_same_scan_start_index, diff_pipe_same_scan_start_index+diff_pipe_lg, diff_pipe_itv) # no GSR vs no GSR, same scan, diff pipe, [12, 16, 20, 24, 28, 32]
+                elif col == 1:
+                    # GSR vs GSR
+                    if row == 0:
+                        pipelist = np.arange(same_pipe_same_scan_start_index+1, same_pipe_same_scan_start_index+same_pipe_lg, same_pipe_itv) # GSR vs GSR, same scan, same pipe, [1,  4,  7, 10]
+                    elif row == 1:
+                        pipelist = np.arange(diff_pipe_same_scan_start_index+1, diff_pipe_same_scan_start_index+diff_pipe_lg, diff_pipe_itv) # GSR vs GSR, same scan, diff pipe, [13, 17, 21, 25, 29, 33]
+                else:
+                    # GSR vs no GSR
+                    if row == 0:
+                        pipelist = np.arange(same_pipe_same_scan_start_index+2, same_pipe_same_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs GSR, same scan, same pipe, [2,  5,  8, 11]
+                    elif row == 1:
+                        pipelist = np.arange(diff_pipe_same_scan_start_index+2, diff_pipe_same_scan_start_index+diff_pipe_lg, diff_pipe_itv) # [14 18 22 26 30 34]
             else:
-                # GSR vs no GSR
-                if row == 0:
-                    pipelist = np.arange(same_pipe_same_scan_start_index+2, same_pipe_same_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs GSR, same scan, same pipe, [2,  5,  8, 11]
-                elif row == 1:
-                    pipelist = np.arange(diff_pipe_same_scan_start_index+2, diff_pipe_same_scan_start_index+diff_pipe_lg, diff_pipe_itv) # [14 18 22 26 30 34]
-            '''
-            # diff scan
-            if col == 0:
-                # no GSR vs no GSR
-                if row == 0:
-                    pipelist = np.arange(same_pipe_diff_scan_start_index, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, diff scan, same pipe, [36, 39, 42, 45]
-                elif row == 1:
-                    pipelist = np.arange(diff_pipe_diff_scan_start_index, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # no GSR vs no GSR, diff scan, diff pipe, [48, 52, 56, 60, 64, 68]
-            elif col == 1:
-                # GSR vs GSR
-                if row == 0:
-                    pipelist = np.arange(same_pipe_diff_scan_start_index+1, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # GSR vs GSR, diff scan, same pipe, [37, 40, 43, 46]
-                elif row == 1:
-                    pipelist = np.arange(diff_pipe_diff_scan_start_index+1, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # GSR vs GSR, diff scan, diff pipe, [49, 53, 57, 61, 65, 69]
-            else:
-                # GSR vs no GSR
-                if row == 0:
-                    pipelist = np.arange(same_pipe_diff_scan_start_index+2, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs GSR, diff scan, same pipe, [38, 41, 44, 47]
-                elif row == 1:
-                    pipelist = np.arange(diff_pipe_diff_scan_start_index+2, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # [50 54 58 62 66 70]
-            '''
+                # diff scan
+                if col == 0:
+                    # no GSR vs no GSR
+                    if row == 0:
+                        pipelist = np.arange(same_pipe_diff_scan_start_index, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs no GSR, diff scan, same pipe, [36, 39, 42, 45]
+                    elif row == 1:
+                        pipelist = np.arange(diff_pipe_diff_scan_start_index, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # no GSR vs no GSR, diff scan, diff pipe, [48, 52, 56, 60, 64, 68]
+                elif col == 1:
+                    # GSR vs GSR
+                    if row == 0:
+                        pipelist = np.arange(same_pipe_diff_scan_start_index+1, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # GSR vs GSR, diff scan, same pipe, [37, 40, 43, 46]
+                    elif row == 1:
+                        pipelist = np.arange(diff_pipe_diff_scan_start_index+1, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # GSR vs GSR, diff scan, diff pipe, [49, 53, 57, 61, 65, 69]
+                else:
+                    # GSR vs no GSR
+                    if row == 0:
+                        pipelist = np.arange(same_pipe_diff_scan_start_index+2, same_pipe_diff_scan_start_index+same_pipe_lg, same_pipe_itv) # no GSR vs GSR, diff scan, same pipe, [38, 41, 44, 47]
+                    elif row == 1:
+                        pipelist = np.arange(diff_pipe_diff_scan_start_index+2, diff_pipe_diff_scan_start_index+diff_pipe_lg, diff_pipe_itv) # [50 54 58 62 66 70]
+            
             for num, pl in enumerate(pipelist):
                 # set color
                 if row in [0,2,4]:
@@ -193,7 +185,7 @@ for corr_type in ['pearson']:
 
                     axs[row, col].fill_between(x_grid, data_lb, data_up, color=color_plot, alpha=0.8)
                     axs[row, col].plot(x_grid, datamean, linewidth=0.5, color='black')
-                    axs[row, col].tick_params(axis='both', which='major', labelsize=axis_tick_size)
+                    axs[row, col].tick_params(axis='both', which='major', labelsize=17)
                     axs[row, col].set_ylim([-0.1, 6])
 
                     # add x ticks at last row
@@ -202,5 +194,4 @@ for corr_type in ['pearson']:
                         axs[row, col].set_xticklabels(['0', '0.6', '0.8', '0.9'])
 
     plt.tight_layout()
-    plt.savefig('./Figure3_same_ses_gsr_10min.png', dpi=300)
-    # plt.savefig('./Figure3_diff_ses_gsr_10min.png', dpi=300)
+    plt.savefig('./Figure3_'+scan_type+'_ses_gsr_10min.png', dpi=300)

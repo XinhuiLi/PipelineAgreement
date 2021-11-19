@@ -1,3 +1,6 @@
+# Please define the environment variable WORKING_DIR 
+# in .pipelineharmonizationrc or in this script
+
 for atlas in 200 600 1000;do
 
 	if [[ $atlas == 200 ]];then
@@ -16,9 +19,9 @@ for atlas in 200 600 1000;do
 	    lastend=499500
 	fi
 
-	tmp='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ICC_1000_run/Reliability_general_minimal_no_parallel_tmp_'$atlas'.R'
+	tmp=$WORKING_DIR'/ICC_1000_run/Reliability_general_minimal_no_parallel_tmp_'$atlas'.R'
 
-	outfolder='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ICC_1000_run/fig1_running_scripts_'$atlas
+	outfolder=$WORKING_DIR'/ICC_1000_run/fig1_running_scripts_'$atlas
 
 	mkdir $outfolder
 
@@ -42,7 +45,7 @@ for atlas in 200 600 1000;do
 	    done
 	done
 
-	running='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ICC_1000_run/running_commands_'$atlas'_fig1.txt'
+	running=$WORKING_DIR'/ICC_1000_run/running_commands_'$atlas'_fig1.txt'
 
 	rm $running
 	for i in $(ls $outfolder);do
@@ -51,9 +54,9 @@ for atlas in 200 600 1000;do
 done
 
 ### parallel run
-cat /data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ICC_1000_run/running_commands_200_fig1.txt | parallel -j 20
-cat /data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ICC_1000_run/running_commands_600_fig1.txt | parallel -j 20
-cat /data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ICC_1000_run/running_commands_1000_fig1.txt | parallel -j 20
+cat $WORKING_DIR/ICC_1000_run/running_commands_200_fig1.txt | parallel -j 20
+cat $WORKING_DIR/ICC_1000_run/running_commands_600_fig1.txt | parallel -j 20
+cat $WORKING_DIR/ICC_1000_run/running_commands_1000_fig1.txt | parallel -j 20
 
 ### combine ICC number together
 for atlas in 200 600 1000;do
@@ -74,8 +77,8 @@ for atlas in 200 600 1000;do
 	fi
 
     echo $atlas
-    datain='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/figures/All_new_ICC_Schaefer'$atlas
-    dataout='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/figures/All_new_ICC_Schaefer'$atlas'_aggreg'
+    datain=$WORKING_DIR'/figures/All_new_ICC_Schaefer'$atlas
+    dataout=$WORKING_DIR'/figures/All_new_ICC_Schaefer'$atlas'_aggreg'
     mkdir -p $dataout
     for run in $(find $datain -iname '*_ICC_1.csv*');do
         run_short=$(basename $run)

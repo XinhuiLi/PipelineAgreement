@@ -414,7 +414,7 @@ def spatial_corr_plot(base,outpath,pipelines_list,atlases,namechangedict,fc_hand
                         session_idx=[0,0]
                 
                     #### Get each figure done
-                    sess_all=[] # get all session used firstly, will check if have them all.
+                    sess_all=[] # get all session used first, will check if have them all.
                     for ii in session_idx:
                         for ses in duration_col[ii]:
                             sess_all.append(ses)
@@ -426,7 +426,7 @@ def spatial_corr_plot(base,outpath,pipelines_list,atlases,namechangedict,fc_hand
                             pp='sc_' + p1 + '_' + p2
                             locals()[pp]=[]
       
-                    # discrimination dataset a R script will be called
+                    # discrimination dataset an R script will be called
                     if 'discm_data' in locals():
                         del discm_data
                     basesub=25426
@@ -640,7 +640,7 @@ simpleplot=False
 atlases=['200',]
 bootstrapping_ci=False
 bootstrapping_average=False
-base='/data3/cnl/fmriprep/Lei_working/testing/ICC_Scan_duration/All_sessions/ROI'
+base=f'{os.environ.get("ROI_BASE")}/ROI'
 
 allpl=sum(pipelines_list, [])
 allpl=list(dict.fromkeys(allpl))
@@ -655,26 +655,7 @@ for ppp in allpl:
         locals()[ppp+''+f.replace('.1D','').replace('sub-00','')]=np.genfromtxt(file)
 
 # this is the name change for the final plot.
-namechangedict={'cpac_fmriprep':'CPAC:fMRIPrep',
-            'cpac_default_all':'CPAC:Default',
-            'cpac_default_no_nuisance':'CPAC:Default',
-            'cpac_default_off_nuisance':'CPAC:Default',
-            'cpac_default_no_nuisance_mni2009':'CPAC:Default(MNI2009)',
-            'cpac_fmriprep_mni2004':'CPAC:fMRIPrep(MNI2004-2mm)',
-            'fmriprep':'fMRIPrep',
-            'cpac_fmriprep_anat_mask':'CPAC:fMRIPrep(Default Anat Mask)',
-            'cpac_fmriprep_func_mask':'CPAC:fMRIPrep(Default Func Mask)',
-            'cpac_fmriprep_coreg':'CPAC:fMRIPrep(Default Coreg)',
-            'cpac_fmriprep_N4':'CPAC:fMRIPrep(No N4)',
-            'cpac_fmriprep_stc':'CPAC:fMRIPrep(No STC)',
-            'cpac_FX_no_filt':'CPAC:fMRIPrep(Nuisance)',
-            'cpac_fmriprep_with_filt':'CPAC:fMRIPrep(Filter)',
-            'cpac_3dvolreg_36':'CPAC:fMRIPrep(Nuisance + Filter)',
-            'cpac_fmriprep_MNI2004_34mm':'CPAC:fMRIPrep(MNI2004-3.4mm)',
-            'cpac_fmriprep_MNI2009_2mm':'CPAC:fMRIPrep(MNI2009-2mm)',
-            'cpac_fmriprep_MNI2004':'CPAC:fMRIPrep(MNI2004-2mm)',
-            'fmriprep_MNI2009_2mm':'fMRIPrep(MNI2009-2mm)',
-            'fmriprep_MNI2004_2mm':'fMRIPrep(MNI2004-2mm)',
+namechangedict={'cpac_default_all':'CPAC:Default',
             'cpac_fmriprep_all':'CPAC:fMRIPrep',
             'cpac_abcd_all':'CPAC:ABCD',
             'cpac_ccs_all':'CPAC:CCS',

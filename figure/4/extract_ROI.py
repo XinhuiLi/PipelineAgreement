@@ -5,7 +5,7 @@ import nibabel as nb
 orig_path = '/data3/cnl/xli/reproducibility/out/source_of_var'
 output_data_path = '/data3/cnl/xli/reproducibility/analysis/data'
 output_roi_path = '/data3/cnl/xli/reproducibility/analysis/ROI200'
-command_list = '/data3/cnl/xli/reproducibility/analysis/Shaefer_ROI_commands.txt'   
+command_list = '/data3/cnl/xli/reproducibility/analysis/Schaefer_ROI_commands.txt'   
 
 cmd = 'rm %s' % (command_list)
 os.system(cmd)

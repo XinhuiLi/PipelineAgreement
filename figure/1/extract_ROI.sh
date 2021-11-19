@@ -1,6 +1,10 @@
+# Please define the environment variables DATA_INPUT_DIR, DATA_OUTPUT_DIR, WORKING_DIR
+# in .pipelineharmonizationrc or in this script
+
+datain=$DATA_INPUT_DIR
+dataout=$DATA_OUTPUT_DIR
+
 ### C-PAC ABCD BBR ###
-datain='/data3/cnl/xli/reproducibility/out'
-dataout='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/data'
 for run in 'cpac_abcd_bbr';do
     rm -rf $dataout'/cpac_abcd_bbr'
     mkdir -p $dataout'/cpac_abcd_bbr'
@@ -12,8 +16,6 @@ for run in 'cpac_abcd_bbr';do
 done
 
 ### C-PAC Default v1.8 ###
-datain='/data3/cnl/xli/reproducibility/out'
-dataout='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/data'
 for run in 'cpac_default_all';do
     rm -rf $dataout'/cpac_default_v1.8'
     mkdir -p $dataout'/cpac_default_v1.8'
@@ -25,8 +27,6 @@ for run in 'cpac_default_all';do
 done
 
 ### C-PAC fMRIPrep/CCS/ABCD-options: MNI2006 + 2mm func write-out ###
-datain='/data3/cnl/xli/reproducibility/out'
-dataout='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/data'
 for run in 'cpac_fmriprep_mni2006_2mm' 'cpac_fmriprep' 'cpac_ccs' 'cpac_abcd';do
     rm -rf $dataout'/'$run'_v1.8'
     mkdir -p $dataout'/'$run'_v1.8'
@@ -38,8 +38,6 @@ for run in 'cpac_fmriprep_mni2006_2mm' 'cpac_fmriprep' 'cpac_ccs' 'cpac_abcd';do
 done
 
 ### fMRIPrep LTS default: MNI2009 + native func write-out ###
-datain='/data3/cnl/fmriprep/Lei_working/FINAL_preprocessed_2021'
-dataout='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/data'
 for run in fmriprep_default;do
     mkdir -p $dataout'/'$run
     for sub in $(ls $datain'/'$run'/output/fmriprep');do
@@ -55,8 +53,6 @@ for run in fmriprep_default;do
 done
 
 ### CCS ###
-datain='/data3/cnl/fmriprep/Lei_working/FINAL_preprocessed_2021'
-dataout='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/data'
 for run in ccs;do
     mkdir -p $dataout'/'$run'_rerun'
     for ((k=27;k<57;k++));do
@@ -67,30 +63,28 @@ for run in ccs;do
 done
 
 ##########
-datain='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/data'
-commandlist='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/Shaefer_ROI_commands.txt'   
+datain=$DATA_OUTPUT_DIR
+commandlist=$DATA_OUTPUT_DIR'/Schaefer_ROI_commands.txt'   
 rm $commandlist
 
 for num_rois in 200 600 1000;do
     echo $num_rois
-    mni2004_2mm='/data3/cnl/fmriprep/Lei_working/Finalizing/Schaefer_Atlas/Schaefer2018_'$num_rois'Parcels_7Networks_order_FSLMNI152_2mm.nii.gz'
-    mni2004_3mm='/data3/cnl/fmriprep/Lei_working/Finalizing/Schaefer_Atlas/Schaefer2018_'$num_rois'Parcels_7Networks_order_FSLMNI152_3mm.nii.gz'
-    mni2009='/data3/cnl/fmriprep/Lei_working/Finalizing/Schaefer_Atlas/Schaefer2018_'$num_rois'Parcels_7Networks_order_FSLMNI152_2mm_NLin2009cAsym.nii.gz'
+    mni2004_2mm=$WORKING_DIR'/Schaefer_Atlas/Schaefer2018_'$num_rois'Parcels_7Networks_order_FSLMNI152_2mm.nii.gz'
+    mni2004_3mm=$WORKING_DIR'/Schaefer_Atlas/Schaefer2018_'$num_rois'Parcels_7Networks_order_FSLMNI152_3mm.nii.gz'
+    mni2009=$WORKING_DIR'/Schaefer_Atlas/Schaefer2018_'$num_rois'Parcels_7Networks_order_FSLMNI152_2mm_NLin2009cAsym.nii.gz'
 
-    dataout='/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ROI/ROI_Schaefer'$num_rois
+    dataout=$WORKING_DIR'/ROI/ROI_Schaefer'$num_rois
     mkdir -p $dataout
 
-    for run in 'cpac_fmriprep_mni2006_2mm_v1.8' 'cpac_fmriprep_v1.8' 'cpac_ccs_v1.8' 'cpac_abcd_v1.8' 'cpac_abcd_bbr';do
+    for run in 'cpac_fmriprep_v1.8' 'cpac_ccs_v1.8' 'cpac_abcd_v1.8';do
         if [[ $run == 'ABCD' ]];then mask=$mni2004_2mm;fi
+        if [[ $run == 'ccs' ]];then mask=$mni2004_3mm;fi
         if [[ $run == 'fmriprep_default' ]];then mask=$mni2009;fi
         if [[ $run == 'dpabi' ]];then mask=$mni2004_3mm;fi
-        if [[ $run == 'ccs' ]];then mask=$mni2004_3mm;fi
 
-        if [[ $run == 'cpac_fmriprep_mni2006_2mm_v1.8' ]];then mask=$mni2004_2mm;fi
-        if [[ $run == 'cpac_fmriprep_v1.8' ]];then mask=$mni2009;fi
-        if [[ $run == 'cpac_ccs_v1.8' ]];then mask=$mni2004_3mm;fi
         if [[ $run == 'cpac_abcd_v1.8' ]];then mask=$mni2004_2mm;fi
-        if [[ $run == 'cpac_abcd_bbr' ]];then mask=$mni2004_2mm;fi
+        if [[ $run == 'cpac_ccs_v1.8' ]];then mask=$mni2004_3mm;fi
+        if [[ $run == 'cpac_fmriprep_v1.8' ]];then mask=$mni2009;fi
 
         mkdir -p $dataout'/'$run
         for i in $(ls $datain'/'$run);do

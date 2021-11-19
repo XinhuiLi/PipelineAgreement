@@ -1,3 +1,23 @@
+''' CCS may require extra processing
+# tissue anat/segment
+3dresample -orient rpi -inset segment_csf.nii.gz -prefix segment_csf_rpi.nii.gz 
+3dresample -orient rpi -inset segment_wm.nii.gz -prefix segment_wm_rpi.nii.gz 
+
+# anat2std anat/reg
+applywarp --ref=/usr/local/fsl/data/standard/MNI152_T1_2mm.nii.gz --in=highres.nii.gz --out=fnirt_highres2standard_brain.nii.gz --warp=highres2standard_warp.nii.gz
+
+# func2std (nuisance) func1
+fslmaths rest.sm0.mni152.nii.gz -Tmean -mul -1 -add rest.sm0.mni152.nii.gz rest.sm0.mni152.demeaned.nii.gz
+
+# func2std (minimal) func1
+applywarp --ref=/data3/cnl/xli/cpac_features/ccs/code/Ting/CCS/templates/MNI152_T1_3mm.nii.gz --in=rest_gms.nii.gz --out=rest_gms_mni152.nii.gz --warp=../anat/reg/highres2standard_warp.nii.gz --premat=reg/example_func2highres.mat
+
+# ccs_02_xt_funcbbregister.sh
+convert_xfm -omat flirt.mat -concat flirt_rsp2rsp.mtx rpi2rsp.mat
+cp flirt.mat example_func2highres.mat
+convert_xfm -inverse -omat highres2example_func.mat example_func2highres.mat
+'''
+
 import glob
 import numpy as np
 import nibabel as nb
@@ -143,28 +163,4 @@ for num_sub, sub in enumerate(sub_list):
             corrs[num_sub][num_var+5] = round(corr, 3)
 
 print(corrs)
-np.save('/data3/cnl/xli/reproducibility/script/ccs_corrs.npy', corrs)
-
-# python /data3/cnl/CPAC_regtest_pack/corr_two_ts.py \ 
-# /data3/cnl/xli/cpac_features/ccs/output/sub-0025428/func1/rest.sm0.mni152.nii.gz \
-# /data3/cnl/freesurfer/ccs_04-16-21/output/cpac_cpac_ccs-options/sub-0025428_ses-1/func/sub-0025428_ses-1_task-rest_run-1_space-template_desc-brain_bold.nii.gz
-
-
-### CCS preprocessing ###
-# tissue anat/segment
-# 3dresample -orient rpi -inset segment_csf.nii.gz -prefix segment_csf_rpi.nii.gz 
-# 3dresample -orient rpi -inset segment_wm.nii.gz -prefix segment_wm_rpi.nii.gz 
-
-# anat2std anat/reg
-# applywarp --ref=/usr/local/fsl/data/standard/MNI152_T1_2mm.nii.gz --in=highres.nii.gz --out=fnirt_highres2standard_brain.nii.gz --warp=highres2standard_warp.nii.gz
-
-# func2std (nuisance) func1
-# fslmaths rest.sm0.mni152.nii.gz -Tmean -mul -1 -add rest.sm0.mni152.nii.gz rest.sm0.mni152.demeaned.nii.gz
-
-# func2std (minimal) func1
-# applywarp --ref=/data3/cnl/xli/cpac_features/ccs/code/Ting/CCS/templates/MNI152_T1_3mm.nii.gz --in=rest_gms.nii.gz --out=rest_gms_mni152.nii.gz --warp=../anat/reg/highres2standard_warp.nii.gz --premat=reg/example_func2highres.mat
-
-# ccs_02_xt_funcbbregister.sh
-# convert_xfm -omat flirt.mat -concat flirt_rsp2rsp.mtx rpi2rsp.mat
-# cp flirt.mat example_func2highres.mat
-# convert_xfm -inverse -omat highres2example_func.mat example_func2highres.mat
+np.save(f'{os.environ.get("SCRIPT_DIR")}/ccs_corrs.npy', corrs)

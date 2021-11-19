@@ -60,13 +60,6 @@ for ((k=27;k<57;k++));do
     done
 done
 
-# For ABCD sub-0025448a
-# 3dTcat -prefix scout.nii.gz /data3/cnl/fmriprep/Lei_working/CPAC_XCP/ABCD/preprocessed/data/sub-0025448/ses-1/files/MNINonLinear/Results/task-rest01/task-rest01.nii.gz[0]
-# fslmaths scout.nii.gz -bin mask_orig.nii.gz
-# 3dmask_tool -prefix mask_filled.nii.gz -input mask_orig.nii.gz -fill_holes
-# 3dROIstats -1Dformat -mask mask_filled.nii.gz /data3/cnl/fmriprep/Lei_working/CPAC_XCP/ABCD/preprocessed/data/sub-0025448/ses-1/files/MNINonLinear/Results/task-rest01/task-rest01.nii.gz > gs.1D
-# 3dTproject -input /data3/cnl/fmriprep/Lei_working/CPAC_XCP/ABCD/preprocessed/data/sub-0025448/ses-1/files/MNINonLinear/Results/task-rest01/task-rest01.nii.gz -mask mask_filled.nii.gz -ort gs.1D -polort 2 -prefix func_gsr.nii.gz
-
 # CCS-options output
 input=/data3/cnl/xli/reproducibility/out/cpac_ccs_all/output/cpac_cpac_ccs-options
 output=/data3/cnl/xli/reproducibility/out/gsr/cpac_ccs_all
