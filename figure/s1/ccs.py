@@ -10,7 +10,7 @@ applywarp --ref=/usr/local/fsl/data/standard/MNI152_T1_2mm.nii.gz --in=highres.n
 fslmaths rest.sm0.mni152.nii.gz -Tmean -mul -1 -add rest.sm0.mni152.nii.gz rest.sm0.mni152.demeaned.nii.gz
 
 # func2std (minimal) func1
-applywarp --ref=/data3/cnl/xli/cpac_features/ccs/code/Ting/CCS/templates/MNI152_T1_3mm.nii.gz --in=rest_gms.nii.gz --out=rest_gms_mni152.nii.gz --warp=../anat/reg/highres2standard_warp.nii.gz --premat=reg/example_func2highres.mat
+applywarp --ref=${PH_SERVER_ROOT}/xli/cpac_features/ccs/code/Ting/CCS/templates/MNI152_T1_3mm.nii.gz --in=rest_gms.nii.gz --out=rest_gms_mni152.nii.gz --warp=../anat/reg/highres2standard_warp.nii.gz --premat=reg/example_func2highres.mat
 
 # ccs_02_xt_funcbbregister.sh
 convert_xfm -omat flirt.mat -concat flirt_rsp2rsp.mtx rpi2rsp.mat
@@ -21,6 +21,7 @@ convert_xfm -inverse -omat highres2example_func.mat example_func2highres.mat
 import glob
 import numpy as np
 import nibabel as nb
+import os
 import scipy.io as sio
 from scipy.stats import pearsonr
 
@@ -73,8 +74,8 @@ def get_motion_params(file, pipeline = 'cpac'):
 
     return data
 
-path1 = '/data3/cnl/fmriprep/Lei_working/FINAL_preprocessed_2021/ccs'
-path2 = '/data3/cnl/xli/reproducibility/out/cpac_ccs'
+path1 = f'{os.environ.get("PH_SERVER_WORKING_ROOT")}/FINAL_preprocessed_2021/ccs'
+path2 = f'{os.environ.get("DATA_INPUT_DIR")}/cpac_ccs'
 
 sub_list = range(25427,25457)
 sub_list.remove(25430)

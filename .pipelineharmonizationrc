@@ -1,16 +1,51 @@
 #!/bin/bash
 # Set these variables and run `source .pipelineharmonizationrc` prior to running PipelineHarmonization scripts
-export PH_SERVER_ROOT="/data3/cnl"  # folder on server containing relevant files
-export LOCAL_ROOT="/Users/xinhui.li/Documents/reproducibility"  # folder on local machine containing relevant files
-export BASEFOLDER="${LOCAL_ROOT}/LA/Reproducibility_Analysis"
+# You can change any of these variables to adjust where generated files are stored
+
+
+## Files on local machine
+
+### folder on local machine containing relevant files
+export LOCAL_ROOT="${HOME}/Documents/reproducibility"
+
+#### no need to set these
+#### these are populated based on the variable above
+#### (unless you want different organization)
 export LOCAL_OUTPUT_DIRECTORY="${LOCAL_ROOT}"
-export DATA_INPUT_DIR="${PH_SERVER_ROOT}/xli/reproducibility/out"
-export SCRIPT_DIR="${PH_SERVER_ROOT}/xli/reproducibility/script"
+export BASEFOLDER="${LOCAL_ROOT}/LA/Reproducibility_Analysis"
+
+### create these paths if they don't exist
+for DIRECTORY in $LOCAL_ROOT $LOCAL_OUTPUT_DIRECTORY $BASEFOLDER
+do
+  mkdir -p "${DIRECTORY}"
+done
+
+
+## Files on server
+
+### folder on server containing relevant files
+export PH_SERVER_ROOT="${LOCAL_ROOT}/data3/cnl"
+
+#### no need to set these
+#### these are populated based on the variable above
+#### (unless you want different organization)
+export PH_SERVER_DATA_ROOT="${PH_SERVER_ROOT}/xli/reproducibility"
+export SCRIPT_DIR="${PH_SERVER_DATA_ROOT}/script"
+export DATA_INPUT_DIR="${PH_SERVER_DATA_ROOT}/out"
 export LOCAL_DATA_DIRECTORY="${DATA_INPUT_DIR}"
-export DATA_OUTPUT_DIR="${PH_SERVER_ROOT}/fmriprep/Lei_working/Finalizing/Minimal/data"  # where to save output data on server
-export WORKING_DIR="${PH_SERVER_ROOT}/fmriprep/Lei_working/Finalizing/Minimal/"  # where to store working files
-export ROI_BASE="${PH_SERVER_ROOT}/fmriprep/Lei_working/testing/ICC_Scan_duration/All_sessions"
-export RUN_ICC_OUTPUT="ICC_1000_All_pearson"
 export CPAC_OUTPUT_DIR="${DATA_INPUT_DIR}/cpac_fmriprep_v2"  # C-PAC outputs
-export FMRIPREP_OUTPUT_DIR="${PH_SERVER_ROOT}/fmriprep/Lei_working/FINAL_preprocessed_2021/fmriprep_default"  # fmriprep outputs
-export FD_DIR="${PH_SERVER_ROOT}/fmriprep/Lei_working/FD_testing/HBN_testing"  # where to store subject list to test motion correction impact
+export PH_SERVER_WORKING_ROOT="${PH_SERVER_ROOT}/fmriprep/Lei_working"
+export WORKING_DIR="${PH_SERVER_WORKING_ROOT}/Finalizing/Minimal"  # where to store working files
+export DATA_OUTPUT_DIR="${WORKING_DIR}/data"  # where to save output data on server
+export ROI_BASE="${PH_SERVER_WORKING_ROOT}/testing/ICC_Scan_duration/All_sessions"
+export FMRIPREP_OUTPUT_DIR="${PH_SERVER_WORKING_ROOT}/FINAL_preprocessed_2021/fmriprep_default"  # fmriprep outputs
+export FD_DIR="${PH_SERVER_WORKING_ROOT}/FD_testing/HBN_testing"  # where to store subject list to test motion correction impact
+
+### create these paths if they don't exist
+for DIRECTORY in $PH_SERVER_ROOT $PH_SERVER_DATA_ROOT $SCRIPT_DIR $DATA_INPUT_DIR $LOCAL_DATA_DIRECTORY $CPAC_OUTPUT_DIR $PH_SERVER_WORKING_ROOT $WORKING_DIR $DATA_OUTPUT_DIR $ROI_BASE $FMRIPREP_OUTPUT_DIR $FD_DIR
+do
+  mkdir -p "${DIRECTORY}"
+done
+
+
+export RUN_ICC_OUTPUT="ICC_1000_All_pearson"

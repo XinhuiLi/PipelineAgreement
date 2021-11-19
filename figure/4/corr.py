@@ -1,6 +1,9 @@
 import os
 import numpy as np
 
+PH_SERVER_DATA_ROOT = os.environ.get('PH_SERVER_DATA_ROOT')
+WORKING_DIR = os.environ.get('WORKING_DIR')
+
 def upper_tri_indexing(A):
     m = A.shape[0]
     r,c = np.triu_indices(m,1)
@@ -21,25 +24,25 @@ for run in run_list:
     to_run = run.split('_')[3]
 
     if from_run == 'default':
-        path1 = '/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ROI/ROI_Schaefer200/cpac_default_v1.8'
+        path1 = f'{WORKING_DIR}/ROI/ROI_Schaefer200/cpac_default_v1.8'
     elif from_run == 'fmriprep':
-        path1 = '/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ROI/ROI_Schaefer200/cpac_fmriprep_v1.8'
+        path1 = f'{WORKING_DIR}/ROI/ROI_Schaefer200/cpac_fmriprep_v1.8'
     elif from_run == 'abcd':
-        path1 = '/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ROI/ROI_Schaefer200/cpac_abcd_v1.8'
+        path1 = f'{WORKING_DIR}/ROI/ROI_Schaefer200/cpac_abcd_v1.8'
     elif from_run == 'ccs':
-        path1 = '/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ROI/ROI_Schaefer200/cpac_ccs_v1.8'
+        path1 = f'{WORKING_DIR}/ROI/ROI_Schaefer200/cpac_ccs_v1.8'
 
     if to_run == 'default':
-        path2 = '/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ROI/ROI_Schaefer200/cpac_default_v1.8'
+        path2 = f'{WORKING_DIR}/ROI/ROI_Schaefer200/cpac_default_v1.8'
     elif to_run == 'fmriprep':
-        path2 = '/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ROI/ROI_Schaefer200/cpac_fmriprep_v1.8'
+        path2 = f'{WORKING_DIR}/ROI/ROI_Schaefer200/cpac_fmriprep_v1.8'
     elif to_run == 'abcd':
-        path2 = '/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ROI/ROI_Schaefer200/cpac_abcd_v1.8'
+        path2 = f'{WORKING_DIR}/ROI/ROI_Schaefer200/cpac_abcd_v1.8'
     elif to_run == 'ccs':
-        path2 = '/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/ROI/ROI_Schaefer200/cpac_ccs_v1.8'
+        path2 = f'{WORKING_DIR}/ROI/ROI_Schaefer200/cpac_ccs_v1.8'
 
-    path_new = os.path.join('/data3/cnl/xli/reproducibility/analysis/ROI200', run)
-    path_out = '/data3/cnl/xli/reproducibility/analysis/PearsonCorr'
+    path_new = os.path.join(PH_SERVER_DATA_ROOT, 'analysis/ROI200', run)
+    path_out = f'{PH_SERVER_DATA_ROOT}/analysis/PearsonCorr'
 
     sc = []
     for sub in range(27, 57):

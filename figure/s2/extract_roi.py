@@ -1,8 +1,9 @@
-import os, glob
+import glob
+import os
 import numpy as np
 
 sub_list = []
-sub_list_file = '/data3/cnl/fmriprep/Lei_working/FD_testing/HBN_testing/sublist.txt'
+sub_list_file = f'{os.environ.get("FD_DIR")}/sublist.txt'
 with open(sub_list_file) as f:
     lines = f.readlines()
     for line in lines:
@@ -11,13 +12,13 @@ sub_list.remove('sub-000000')
 sub_list.remove('sub-5463599')
 sub_list.remove('sub-5713772')
 
-run_path = '/data3/cnl/sgia/XinMotion/runs/'
+run_path = f'{os.environ.get("PH_SERVER_ROOT")}/sgia/XinMotion/runs/'
 afni = 'v181-MotionVariation'
 afni_last_folder = 'v181-MotionVariation-last'
 fsl = 'v181-MotionVariation-MC'
 fsl_last_folder = 'v181-MotionVariation-last-MC'
 
-out_dir = '/data3/cnl/fmriprep/Lei_working/Finalizing/Minimal/data/'
+out_dir = os.environ.get('DATA_OUTPUT_DIR')
 os.chdir(out_dir)
 
 for tool in ['afni', 'fsl']:

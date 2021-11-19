@@ -1,11 +1,11 @@
-SUBJECTS_DIR=/data3/cnl/fmriprep/Lei_working/FINAL_preprocessed_2021/ccs
+SUBJECTS_DIR=${PH_SERVER_WORKING_ROOT}/FINAL_preprocessed_2021/ccs
 for ((k=27;k<57;k++)); do
     cd ${SUBJECTS_DIR}/sub-00254${k}/anat/segment
     3dresample -orient rpi -inset segment_csf.nii.gz -prefix segment_csf_rpi.nii.gz
     3dresample -orient rpi -inset segment_wm.nii.gz -prefix segment_wm_rpi.nii.gz
 done
 
-CPAC_DIR=/data3/cnl/xli/reproducibility/out/cpac_ccs
+CPAC_DIR=${DATA_INPUT_DIR}/cpac_ccs
 for ((k=27;k<57;k++)); do
     cd ${CPAC_DIR}/working/cpac_sub-00254${k}a_ses-1/anat_preproc_freesurfer_43/anat_freesurfer/recon_all/mri
     # brain mask
