@@ -4,9 +4,9 @@ import scipy.stats as st
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-agg_icc=True # whether aggregate ICC output or not, set it to 'True' for the first time and 'False' otherwise
+agg_icc=False # whether aggregate ICC output or not, set it to 'True' for the first time and 'False' otherwise
 datain=os.environ.get('RUN_ICC_OUTPUT') # path to ICC output from run_ICC.py
-scan_type='same' # 'same' for same data; 'diff' for test-retest data
+scan_type='diff' # 'same' for same data; 'diff' for test-retest data
 
 for corr_type in ['pearson']:
 
@@ -51,12 +51,9 @@ for corr_type in ['pearson']:
     # combine different random runs together
     if agg_icc:
         for pl in range(0,num_pair):
-            print(pl)
             for ses in range(1,4):
                 if os.path.isfile(datain+'/Random_All_Pipeline-'+str(pl)+'_Ses_'+str(ses)+'.txt'):
                     continue
-                print('ses is ' + str(ses))
-                print('Sum')
                 # each is a single plot
                 dataall = np.empty((num_rand_times,binnum))     
 
@@ -163,7 +160,6 @@ for corr_type in ['pearson']:
                         color_plot=sns.color_palette("tab20")[9] # default vs fmriprep, purple
 
                 for ses in range(1,2):
-                    print('ses is ' + str(ses))
                     if row == 1 and col == 2:
                         # load No GSR A vs GSR B and GSR A vs No GSR B
                         dataall=np.concatenate((np.loadtxt(datain+'/Random_All_Pipeline-'+str(pl)+'_Ses_'+str(ses)+'.txt'), np.loadtxt(datain+'/Random_All_Pipeline-'+str(pl+1)+'_Ses_'+str(ses)+'.txt')))
@@ -190,8 +186,8 @@ for corr_type in ['pearson']:
 
                     # add x ticks at last row
                     if row == nrow-1:
-                        axs[row, col].set_xticks([x_grid[0], x_grid[int(0.6*binnum)], x_grid[int(0.8*binnum)], x_grid[int(0.9*binnum)]])
-                        axs[row, col].set_xticklabels(['0', '0.6', '0.8', '0.9'])
+                        axs[row, col].set_xticks([x_grid[0], x_grid[int(0.6*binnum)], x_grid[int(0.8*binnum)], x_grid[int(0.9*binnum)], x_grid[binnum-1]])
+                        axs[row, col].set_xticklabels(['0', '0.6', '0.8', '0.9', '1'])
 
     plt.tight_layout()
     plt.savefig('./Figure3_'+scan_type+'_ses_gsr_10min.png', dpi=300)

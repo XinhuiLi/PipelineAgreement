@@ -1,4 +1,3 @@
-
 library(ICC)
 library(gplots)
 library(gridGraphics)
@@ -6,12 +5,9 @@ library(grid)
 #library(lme4)
 library('lme4',lib.loc='/home/lai/R/x86_64-pc-linux-gnu-library/3.2')
 library(R.matlab)
-#library(mgc)
-#library(doParallel) 
 library(data.table)
 
 args = commandArgs(trailingOnly=TRUE)
-
 
 filein=args[1]
 d=t(fread(filein))

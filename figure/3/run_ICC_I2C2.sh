@@ -2,7 +2,7 @@
 # in .pipelineharmonizationrc or in this script
 
 ## create data for ICC and I2C2
-python3.8 $WORKING_DIR/ICC_a.py
+python3.8 $WORKING_DIR/run_ICC.py
 
 # ICC
 datain=$WORKING_DIR'/figures/Data_ICC_1000_All_pearson'

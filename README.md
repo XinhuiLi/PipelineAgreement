@@ -2,7 +2,7 @@
 
 Resources for pipeline harmonization paper
 
-### Data Running
+## Data Running
 
 The [`config`](config) folder contains C-PAC pipeline configuration files
 
@@ -26,7 +26,7 @@ fcpindi/c-pac:release-v1.8.1 /bids_dataset /outputs participant \
 Replace `<local data directory>` and `<local output directory>` to your local directories, and replace `<pipeline configuration file>` to your pipeline configuration file path such as `/outputs/default_pipeline.yml`. For more details, please check C-PAC user documentation: https://fcp-indi.github.io/
 
 
-### Visualization
+## Visualization
 
 The [`figure`](figure) folder contains code to plot figures in the paper
 
@@ -38,7 +38,7 @@ Before running:
 
 3. Run scripts (and IDEs like RStudio or Jupyter) from a terminal in which you've sourced [`.pipelineharmonizationrc`](.pipelineharmonizationrc)
 
-#### Figure 1
+### Figure 1
 
 - Update [`extract_ROI.sh`](figure/1/extract_ROI.sh) to create soft links for functional timeseries and run 3dROIstats
 
@@ -66,11 +66,11 @@ Before running:
 
 - Plot Fig. 1 using [`plot_fig1.py`](figure/1/plot_fig1.py)
 
-#### Figure 2
+### Figure 2
 
 - Plot Fig. 2 using [`plot_fig2.py`](figure/2/plot_fig2.py)
 
-#### Figure 3
+### Figure 3
 
 - Extract ROI
 ```
@@ -94,7 +94,7 @@ Outputs will be saved in a folder called `ICC_1000_All_pearson` (19k matrix)
 
 - Plot Fig. 3B using [`plot_fig3_time.py`](figure/3/plot_fig3_time.py) and [`plot_fig3_gsr.py`](figure/3/plot_fig3_gsr.py)
 
-#### Figure 4
+### Figure 4
 
 - Run [`extract_ROI.py`](figure/4/extract_ROI.py)
 
@@ -104,11 +104,11 @@ Outputs will be saved in a folder called `ICC_1000_All_pearson` (19k matrix)
 
 Notes: The [`post-processing`](figure/4/post-processing) folder for extra processing for several runs
 
-#### Figure 5
+### Figure 5
 
 - Plot Fig. 5 using [`plot_fig5.py`](figure/5/plot_fig5.py)
 
-#### Supplementary Figure 1
+### Supplementary Figure 1
 
 - Run [`ccs_postproc.sh`](figure/s1/ccs_postproc.sh) and [`fmriprep_postproc.sh`](figure/s1/fmriprep_postproc.sh) to generate intermediate files for comparison
 
@@ -116,25 +116,26 @@ Notes: The [`post-processing`](figure/4/post-processing) folder for extra proces
 
 - Plot Fig. S1 using [`plot_figs1.ipynb`](figure/1/plot_figs1.ipynb)
 
-#### Supplementary Figure 2
+### Supplementary Figure 2
 
 - Run [`corr_fd.py`](figure/s2/corr_fd.py) to calculate FD correlation
 
 - Plot Fig. S2 using [`plot_figs2.ipynb`](figure/s2/plot_figs2.ipynb)
 
-#### Supplementary Figure 3
+### Supplementary Figure 3
 
 - Plot Fig. S3 using [`plot_figs3.py`](figure/s3/plot_figs3.py)
 
-#### Supplementary Figure 4
+### Supplementary Figure 4
 
 - Plot Fig. S4 using [`plot_figs4.py`](figure/s4/plot_figs4.py)
 
-#### Supplementary Figure 5
+### Supplementary Figure 5
 
 - Run [`corr_vol_ts.py`](figure/s5/corr_vol_ts.py) to get voxel-wise timeseries correlation
 
+## Contributors
 
 Contributors: [Xinhui Li](https://github.com/XinhuiLi), [Lei Ai](https://github.com/hahaai)
 
-Acknowledgment: Thank [Jon Clucas](https://github.com/shnizzedy) for code review and [Anibal Sólon](https://github.com/anibalsolon) for technical support.
+Acknowledgements: Thank [Jon Clucas](https://github.com/shnizzedy) for code review and [Anibal Sólon](https://github.com/anibalsolon) for technical support.

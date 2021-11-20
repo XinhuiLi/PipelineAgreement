@@ -1,14 +1,11 @@
-import numpy as np
 import os
-import seaborn as sns
-import matplotlib.pyplot as plt
-from matplotlib.legend_handler import HandlerLine2D
-from scipy import stats
-from scipy.io import loadmat
-from scipy.stats import rankdata
-from scipy.stats import spearmanr
 import random
 import string
+import numpy as np
+import seaborn as sns
+import matplotlib.pyplot as plt
+from scipy.stats import rankdata
+from scipy.stats import spearmanr
 from itertools import combinations
 from scipy.stats import gaussian_kde
 from hyppo.discrim import DiscrimOneSample

@@ -141,7 +141,7 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
 
         g.map(plt.axhline, y=0, lw=2, clip_on=False)
 
-        # Define and use a simple function to label the plot in axes coordinates
+        # Define and use a simple function to label the plot in  axis coordinates
         def label(x, color, label):
             ax = plt.gca()
             ax.text(0, .2, label, fontweight="bold", color='black',fontsize=35,
@@ -155,7 +155,7 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
         ax = plt.gca()
         ax.tick_params(axis = 'both', which = 'major', labelsize = 35)
 
-        # Remove axes details that don't play well with overlap
+         
         g.set(xlim=(0, 1))
         g.set_titles("")
         g.set(xlabel='')
@@ -288,7 +288,7 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
                 df_all=pd.concat([df_all,tmp])
                 idx +=1
 
-        # put multiple atlas in one redge plot. 
+        # put multiple atlas in one ridge plot. 
         if atlas_idx==0:
             df_ridge =df_all
         elif atlas_idx==1:
@@ -347,7 +347,7 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
 
         g.map(plt.axhline, y=0, lw=2, clip_on=False)
 
-        # Define and use a simple function to label the plot in axes coordinates
+        # Define and use a simple function to label the plot in  axis coordinates
         def label(x, color, label):
             ax = plt.gca()
             ax.text(0, .2, label, fontweight="bold", color='black',fontsize=35,
@@ -360,7 +360,7 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
         ax = plt.gca()
         ax.tick_params(axis = 'both', which = 'major', labelsize = 35)
 
-        # Remove axes details that don't play well with overlap
+         
         g.set(xlim=(0, 1))
         g.set_titles("")
         g.set(xlabel='')

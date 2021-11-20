@@ -3,9 +3,6 @@ import numpy as np
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
-from matplotlib.legend_handler import HandlerLine2D
-from scipy import stats
-from scipy.io import loadmat
 from scipy.stats import rankdata
 from scipy.stats import spearmanr
 
@@ -141,7 +138,7 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
 
         g.map(plt.axhline, y=0, lw=2, clip_on=False)
 
-        # Define and use a simple function to label the plot in axes coordinates
+        # Define and use a simple function to label the plot in  axis coordinates
         def label(x, color, label):
             ax = plt.gca()
             ax.text(0, .2, label, fontweight="bold", color='black',fontsize=35,
@@ -155,7 +152,6 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
         ax = plt.gca()
         ax.tick_params(axis = 'both', which = 'major', labelsize = 35)
 
-        # Remove axes details that don't play well with overlap
         g.set(xlim=(0, 1))
         g.set_titles("")
         g.set(xlabel='')
@@ -193,8 +189,6 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
             for xxx in pipelines:
                 foldercontent=os.listdir(base +'/ROI_Schaefer' + atlas + '/' + xxx)
                 if str(i+basesub) not in str(foldercontent):
-                    print(xxx + 'not in')
-                    print(i+basesub)
                     stop=1
             if stop==1:
                 continue
@@ -202,8 +196,6 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
             # put them all together, load each pipeline file and calcuate calrelaiton and give it a different name.
             for pl in pipelines:
                 datafolder = base +'/ROI_Schaefer' + atlas + '/' + pl
-                # cpacdefault24
-                #${PH_SERVER_WORKING_ROOT}/CPAC_XCP/CPAC_aggre_output/sub-0025427a_ses-1_bandpassed_demeaned_filtered_antswarp_cc200.1D
                 cpacfile=datafolder + '/sub-00' + str(basesub+i) + 'a.1D'
                 data=np.genfromtxt(cpacfile)
                 if data.shape[0] != 295:
@@ -216,7 +208,6 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
 
             def spatial_correlation(corr_a,corr_b,sc,corr_type):
                 if fc_handle=='Scale':
-                    print('here')
                     corr_a[np.isnan(corr_a)]=0
                     corr_b[np.isnan(corr_b)]=0
                     corr_a= (corr_a - corr_a.mean())/corr_a.std(ddof=0)
@@ -259,17 +250,14 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
             plotrange=len(pipelines)
         for i in range(0,plotrange):
             for j in range(i+1,len(pipelines)):
-                print(idx)
                 p1=pipelines[i]
                 p2=pipelines[j]
                 pp1='sc_' + p1 + '_' + p2
                 pp2='sc_' + p2 + '_' + p1
                 if pp1 in locals():
                     pp = locals()[pp1]
-                    print(pp1)
                 elif pp2 in locals():
                     pp = locals()[pp2]
-                    print(pp2)
                 pn1=p1
                 pn2=p2
                 for key in namechangedict:
@@ -278,7 +266,6 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
                     pn2=pn2.replace(key,namechangedict[key])
 
                 # get median and std
-                print(pp1+str(np.median(pp))+str(np.std(pp)))
                 value_median['Pipelines'][idx] = pp1
                 value_median['Atlas'+atlas][idx] = np.median(pp)
 
@@ -294,7 +281,7 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
                 df_all=pd.concat([df_all,tmp])
                 idx +=1
 
-        # put multiple atlas in one redge plot. 
+        # put multiple atlas in one ridge plot. 
         if atlas_idx==0:
             df_ridge =df_all
         elif atlas_idx==1:
@@ -357,7 +344,7 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
 
         g.map(plt.axhline, y=0, lw=2, clip_on=False)
 
-        # Define and use a simple function to label the plot in axes coordinates
+        # Define and use a simple function to label the plot in  axis coordinates
         def label(x, color, label):
             ax = plt.gca()
             ax.text(0, .2, label, fontweight="bold", color='black',fontsize=35,
@@ -370,7 +357,7 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
         ax = plt.gca()
         ax.tick_params(axis = 'both', which = 'major', labelsize = 35)
 
-        # Remove axes details that don't play well with overlap
+         
         g.set(xlim=(0, 1))
         g.set_titles("")
         g.set(xlabel='')
@@ -406,8 +393,6 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
                 p2=p2.replace('ABCD','abcd')
                 pp1= base+ '/ICC_Schaefer' + atlas + '/' + p1 + '_' + p2 + '_ICC.csv'
                 pp2= base+ '/ICC_Schaefer' + atlas + '/' + p2 + '_' + p1 + '_ICC.csv'
-                print(pp1)
-                print(pp2)
                 if os.path.isfile(pp1):
                     tmp=pd.read_csv(pp1,header=None,names=['x'])
                     tmp=tmp['x'][np.where(tmp>np.finfo(np.float32).eps)[0]].to_frame()
@@ -436,7 +421,6 @@ def ICC_ridgeplot(base,outpath,pipelines,atlases,namechangedict,simpleplot,plotn
 
                 tmp['g']=pn1+' - '+pn2
                 df_all=pd.concat([df_all,tmp])
-                print(df_all.head(3))
                 idx += 1
 
         # put multiple atlas in one plot

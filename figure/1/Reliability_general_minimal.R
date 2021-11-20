@@ -8,12 +8,12 @@ library(mgc)
 library(doParallel)  
 source('trace_only_unba.R')
 
-# a new differentt I2C2
+# a new different I2C2
 #source("https://neuroconductor.org/neurocLite.R")
 #neuro_install('I2C2')
 #library(I2C2)
 
-## calculatew ICC
+## calculate ICC
 
 getICC <- function (i,subn,xcp_data,cpac_data){
   #print(i)
