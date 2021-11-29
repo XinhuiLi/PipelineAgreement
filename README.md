@@ -134,8 +134,12 @@ Notes: The [`post-processing`](figure/4/post-processing) folder for extra proces
 
 - Run [`corr_vol_ts.py`](figure/s5/corr_vol_ts.py) to get voxel-wise timeseries correlation
 
+### Supplementary Figure 6
+
+- Plot ICC heatmaps in Fig. S6 using [`plot_figs6.ipynb`](figure/s6/plot_figs6.ipynb)
+
 ## Contributors
 
-Contributors: [Xinhui Li](https://github.com/XinhuiLi), [Lei Ai](https://github.com/hahaai)
+Contributors: [Xinhui Li](https://github.com/XinhuiLi), [Lei Ai](https://github.com/hahaai), [Greg Kiar](https://github.com/gkiar)
 
 Acknowledgements: Thank [Jon Clucas](https://github.com/shnizzedy) for code review and [Anibal Sólon](https://github.com/anibalsolon) for technical support.
