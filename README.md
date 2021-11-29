@@ -1,5 +1,7 @@
 # Pipeline Harmonization
 
+[![DOI](https://zenodo.org/badge/415936717.svg)](https://zenodo.org/badge/latestdoi/415936717)
+
 Resources for pipeline harmonization paper
 
 ## Data Running
