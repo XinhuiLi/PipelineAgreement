@@ -83,8 +83,10 @@ def get_fd_corr(sub_list, type, name):
 
     afni = np.zeros( (6, 30) )
     fsl = np.zeros( (6, 30) )
+    afni_fsl = np.zeros( (4, 30) )
 
     for i, sub in enumerate(sub_list):
+
         afni[0, i], _ = pearsonr( afni_mean[i], afni_median[i] )
         afni[1, i], _ = pearsonr( afni_mean[i], afni_first[i] )
         afni[2, i], _ = pearsonr( afni_mean[i], afni_last[i] )
@@ -98,9 +100,15 @@ def get_fd_corr(sub_list, type, name):
         fsl[3, i], _ = pearsonr( fsl_median[i], fsl_first[i] )
         fsl[4, i], _ = pearsonr( fsl_median[i], fsl_last[i] )
         fsl[5, i], _ = pearsonr( fsl_first[i], fsl_last[i] )
-    
-    np.save(f'{os.environ.get("SCRIPT_DIR")}/HBN_AFNI_FD_'+type+'_'+name+'.npy', afni)
-    np.save(f'{os.environ.get("SCRIPT_DIR")}/HBN_FSL_FD_'+type+'_'+name+'.npy', fsl)
+
+        afni_fsl[0, i], _ = pearsonr( afni_mean[i], fsl_mean[i] )
+        afni_fsl[1, i], _ = pearsonr( afni_median[i], fsl_median[i] )
+        afni_fsl[2, i], _ = pearsonr( afni_first[i], fsl_first[i] )
+        afni_fsl[3, i], _ = pearsonr( afni_last[i], fsl_last[i] )
+        
+    np.save(f'{os.environ.get("SCRIPT_DIR")}/HBN_AFNI_FD_{type}_{name}.npy', afni)
+    np.save(f'{os.environ.get("SCRIPT_DIR")}/HBN_FSL_FD_{type}_{name}.npy', fsl)
+    np.save(f'{os.environ.get("SCRIPT_DIR")}/HBN_AFNI-FSL_FD_{type}_{name}.npy', afni_fsl)
 
 get_fd_corr(low_motion_sub_list, 'power', 'low_motion')
 get_fd_corr(high_motion_sub_list, 'power', 'high_motion')
