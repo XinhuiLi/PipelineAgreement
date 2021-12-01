@@ -112,21 +112,21 @@ Notes: The [`post-processing`](figure/4/post-processing) folder for extra proces
 
 ### Supplementary Figure 1
 
-- Run [`ccs_postproc.sh`](figure/s1/ccs_postproc.sh) and [`fmriprep_postproc.sh`](figure/s1/fmriprep_postproc.sh) to generate intermediate files for comparison
-
-- Run [`abcd.py`](figure/s1/abcd.py)/[`ccs.py`](figure/s1/ccs.py)/[`fmriprep.py`](figure/s1/fmriprep.py) to generate correlation
-
-- Plot Fig. S1 using [`plot_figs1.ipynb`](figure/1/plot_figs1.ipynb)
+- Plot ICC heatmaps in Fig. S1 using [`plot_figs1.ipynb`](figure/s1/plot_figs1.ipynb)
 
 ### Supplementary Figure 2
 
-- Run [`corr_fd.py`](figure/s2/corr_fd.py) to calculate FD correlation
+- Run [`ccs_postproc.sh`](figure/s2/ccs_postproc.sh) and [`fmriprep_postproc.sh`](figure/s2/fmriprep_postproc.sh) to generate intermediate files for comparison
+
+- Run [`abcd.py`](figure/s2/abcd.py)/[`ccs.py`](figure/s2/ccs.py)/[`fmriprep.py`](figure/s2/fmriprep.py) to generate correlation
 
 - Plot Fig. S2 using [`plot_figs2.ipynb`](figure/s2/plot_figs2.ipynb)
 
 ### Supplementary Figure 3
 
-- Plot Fig. S3 using [`plot_figs3.py`](figure/s3/plot_figs3.py)
+- Run [`corr_fd.py`](figure/s3/corr_fd.py) to calculate FD correlation
+
+- Plot Fig. S3 using [`plot_figs3.ipynb`](figure/s3/plot_figs3.ipynb)
 
 ### Supplementary Figure 4
 
@@ -134,11 +134,11 @@ Notes: The [`post-processing`](figure/4/post-processing) folder for extra proces
 
 ### Supplementary Figure 5
 
-- Run [`corr_vol_ts.py`](figure/s5/corr_vol_ts.py) to get voxel-wise timeseries correlation
+- Plot Fig. S5 using [`plot_figs5.py`](figure/s5/plot_figs5.py)
 
 ### Supplementary Figure 6
 
-- Plot ICC heatmaps in Fig. S6 using [`plot_figs6.ipynb`](figure/s6/plot_figs6.ipynb)
+- Run [`corr_vol_ts.py`](figure/s6/corr_vol_ts.py) to get voxel-wise timeseries correlation
 
 ## Contributors
 
