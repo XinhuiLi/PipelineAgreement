@@ -2,7 +2,7 @@
 
 [![DOI](https://zenodo.org/badge/415936717.svg)](https://zenodo.org/badge/latestdoi/415936717)
 
-Resources for pipeline harmonization paper
+Resources for the paper: [Moving Beyond Processing and Analysis-Related Variation in Neuroscience](https://www.biorxiv.org/content/10.1101/2021.12.01.470790v1)
 
 ## Data Running
 
@@ -92,9 +92,9 @@ bash figure/3/run_ICC_I2C2.sh
 
 Outputs will be saved in a folder called `ICC_1000_All_pearson` (19k matrix)
 
-- Plot Fig. 3A using [`plot_fig3_time.py`](figure/3/plot_fig3_time.py) and [`plot_fig3_gsr.py`](figure/3/plot_fig3_gsr.py)
+- Plot Fig. 3A using [`plot_fig3_time.py`](figure/3/plot_fig3_time.py)
 
-- Plot Fig. 3B using [`plot_fig3_time.py`](figure/3/plot_fig3_time.py) and [`plot_fig3_gsr.py`](figure/3/plot_fig3_gsr.py)
+- Plot Fig. 3B using [`plot_fig3_gsr.py`](figure/3/plot_fig3_gsr.py)
 
 ### Figure 4
 
@@ -104,7 +104,7 @@ Outputs will be saved in a folder called `ICC_1000_All_pearson` (19k matrix)
 
 - Plot Fig. 4 using [`plot_fig4.ipynb`](figure/4/plot_fig4.ipynb)
 
-Notes: The [`post-processing`](figure/4/post-processing) folder for extra processing for several runs
+Notes: The [`post-processing`](figure/4/post-processing) folder has extra processing scripts for several runs
 
 ### Figure 5
 
