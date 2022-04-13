@@ -38,7 +38,7 @@ anatomical_preproc:
     run_before_preproc: False
 
     # ACPC aligned template
-    T1w_ACPC_template: /ABCD_template/MNI152_T1_1mm.nii.gz
+    T1w_ACPC_template: /opt/dcan-tools/pipeline/global/templates/MNI152_T1_1mm.nii.gz
 
   brain_extraction: 
 
