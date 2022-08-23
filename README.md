@@ -1,4 +1,4 @@
-# Pipeline Harmonization
+# Pipeline Agreement
 
 [![DOI](https://zenodo.org/badge/415936717.svg)](https://zenodo.org/badge/latestdoi/415936717)
 
@@ -110,35 +110,43 @@ Notes: The [`post-processing`](figure/4/post-processing) folder has extra proces
 
 - Plot Fig. 5 using [`plot_fig5.py`](figure/5/plot_fig5.py)
 
-### Supplementary Figure 1
-
-- Plot ICC heatmaps in Fig. S1 using [`plot_figs1.ipynb`](figure/s1/plot_figs1.ipynb)
-
 ### Supplementary Figure 2
 
-- Run [`ccs_postproc.sh`](figure/s2/ccs_postproc.sh) and [`fmriprep_postproc.sh`](figure/s2/fmriprep_postproc.sh) to generate intermediate files for comparison
-
-- Run [`abcd.py`](figure/s2/abcd.py)/[`ccs.py`](figure/s2/ccs.py)/[`fmriprep.py`](figure/s2/fmriprep.py) to generate correlation
-
-- Plot Fig. S2 using [`plot_figs2.ipynb`](figure/s2/plot_figs2.ipynb)
+- Plot ICC heatmaps in Fig. S2 using [`plot_figs2.ipynb`](figure/s2/plot_figs2.ipynb)
 
 ### Supplementary Figure 3
-
-- Run [`corr_fd.py`](figure/s3/corr_fd.py) to calculate FD correlation
 
 - Plot Fig. S3 using [`plot_figs3.ipynb`](figure/s3/plot_figs3.ipynb)
 
 ### Supplementary Figure 4
 
-- Plot Fig. S4 using [`plot_figs4.py`](figure/s4/plot_figs4.py)
+- Plot Fig. S4 using [`plot_figs4.ipynb`](figure/s4/plot_figs4.ipynb)
 
 ### Supplementary Figure 5
 
-- Plot Fig. S5 using [`plot_figs5.py`](figure/s5/plot_figs5.py)
+- Run [`ccs_postproc.sh`](figure/s5/ccs_postproc.sh) and [`fmriprep_postproc.sh`](figure/s5/fmriprep_postproc.sh) to generate intermediate files for comparison
+
+- Run [`abcd.py`](figure/s5/abcd.py)/[`ccs.py`](figure/s5/ccs.py)/[`fmriprep.py`](figure/s5/fmriprep.py) to generate correlation
+
+- Plot Fig. S5 using [`plot_figs5.ipynb`](figure/s5/plot_figs5.ipynb)
 
 ### Supplementary Figure 6
 
-- Run [`corr_vol_ts.py`](figure/s6/corr_vol_ts.py) to get voxel-wise timeseries correlation
+- Run [`corr_fd.py`](figure/s6/corr_fd.py) to calculate FD correlation
+
+- Plot Fig. S3 using [`plot_figs6.ipynb`](figure/s6/plot_figs6.ipynb)
+
+### Supplementary Figure 7
+
+- Plot Fig. S7 using [`plot_figs7.py`](figure/s7/plot_figs7.py)
+
+### Supplementary Figure 8
+
+- Run [`corr_vol_ts.py`](figure/s8/corr_vol_ts.py) to get voxel-wise timeseries correlation
+
+### Supplementary Figure 9
+
+- Plot Fig. S9 using [`plot_figs9.py`](figure/s5/plot_figs9.py)
 
 ## Contributors
 

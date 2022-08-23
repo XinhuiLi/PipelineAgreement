@@ -185,8 +185,10 @@ def spatial_corr_ridgeplot(base,outpath,pipelines,atlases,namechangedict,fc_hand
                 pp='sc_' + p1 + '_' + p2
                 locals()[pp]=[]
 
-        # basesub=25426
-        sub_list=os.listdir(base +'/ROI_Schaefer' + atlas + '/v181-HBN-default')
+        # TODO change this path as needed
+        # sub_list=os.listdir(base +'/ROI_Schaefer' + atlas + '/v181-HBN-default')
+        # sub_list=os.listdir(base +'/ROI_Schaefer' + atlas + '/hbn_cpac_default')
+        sub_list=os.listdir(base +'/ROI_Schaefer' + atlas + '/hbn_cpac_default_hm')
         for sub in sub_list:
             stop=0
             for xxx in pipelines:
@@ -464,15 +466,28 @@ if __name__=='__main__':
     simpleplot=False
     atlases=['200','600','1000']
 
-    wd_path=os.environ.get("BASEFOLDER")
+    # wd_path=os.environ.get("BASEFOLDER")
+    wd_path='/Users/xinhui.li/Documents/reproducibility/LA/Reproducibility_Analysis'
     base=wd_path+'/ROI'
 
-    namechangedict={'v181-HBN-default':'CPAC:Default',
-                    'v181-HBN-fmriprep-opts':'fMRIPrep',
-                    'v181-HBN-DCAN':'abcd',
-                    'v181-HBN-CCS':'CCS'}
+    # namechangedict={'v181-HBN-default':'CPAC:Default',
+    #                 'v181-HBN-fmriprep-opts':'fMRIPrep',
+    #                 'v181-HBN-DCAN':'abcd',
+    #                 'v181-HBN-CCS':'CCS'}
+    
+    # namechangedict={'hbn_cpac_default':'Default',
+    #                 'hbn_cpac_abcd':'CPAC:ABCD',
+    #                 'hbn_cpac_ccs':'CPAC:CCS',
+    #                 'hbn_cpac_fmriprep':'CPAC:fMRIPrep'}
 
-    pipelines=['v181-HBN-CCS', 'v181-HBN-DCAN', 'v181-HBN-default', 'v181-HBN-fmriprep-opts']
+    namechangedict={'hbn_cpac_default_hm':'Default',
+                    'hbn_cpac_abcd_hm':'CPAC:ABCD',
+                    'hbn_cpac_ccs_hm':'CPAC:CCS',
+                    'hbn_cpac_fmriprep_hm':'CPAC:fMRIPrep'}
+
+    # pipelines=['v181-HBN-CCS', 'v181-HBN-DCAN', 'v181-HBN-default', 'v181-HBN-fmriprep-opts']
+    # pipelines=['hbn_cpac_default', 'hbn_cpac_abcd', 'hbn_cpac_ccs', 'hbn_cpac_fmriprep']
+    pipelines=['hbn_cpac_default_hm', 'hbn_cpac_abcd_hm', 'hbn_cpac_ccs_hm', 'hbn_cpac_fmriprep_hm']
 
     nameorder=spatial_corr_ridgeplot(base,base.replace('ROI','figures'),pipelines,atlases,namechangedict,fc_handle,simpleplot,'pearson')
     ICC_ridgeplot(base.replace('ROI','figures'),base.replace('ROI','figures'),pipelines,atlases,namechangedict,simpleplot,nameorder)
