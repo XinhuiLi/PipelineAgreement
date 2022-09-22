@@ -25,8 +25,9 @@ fcpindi/c-pac:release-v1.8.1 /bids_dataset /outputs participant \
 --save_working_dir
 ```
 
-Replace `<local data directory>` and `<local output directory>` to your local directories, and replace `<pipeline configuration file>` to your pipeline configuration file path such as `/outputs/default_pipeline.yml`. For more details, please check C-PAC user documentation: https://fcp-indi.github.io/
+Replace `<local data directory>` and `<local output directory>` to your local directories, and replace `<pipeline configuration file>` to your pipeline configuration file path such as `/outputs/default_pipeline.yml`. For more details, please check C-PAC user documentation: https://fcp-indi.github.io/.
 
+The preprocessed Schaefer200/600/1000 functional connectivity datasets can be found at https://osf.io/kgpu2/. 
 
 ## Visualization
 
@@ -124,29 +125,29 @@ Notes: The [`post-processing`](figure/4/post-processing) folder has extra proces
 
 ### Supplementary Figure 5
 
-- Run [`ccs_postproc.sh`](figure/s5/ccs_postproc.sh) and [`fmriprep_postproc.sh`](figure/s5/fmriprep_postproc.sh) to generate intermediate files for comparison
-
-- Run [`abcd.py`](figure/s5/abcd.py)/[`ccs.py`](figure/s5/ccs.py)/[`fmriprep.py`](figure/s5/fmriprep.py) to generate correlation
-
-- Plot Fig. S5 using [`plot_figs5.ipynb`](figure/s5/plot_figs5.ipynb)
+- Plot Fig. S5 using [`plot_figs5.py`](figure/s5/plot_figs5.py)
 
 ### Supplementary Figure 6
 
-- Run [`corr_fd.py`](figure/s6/corr_fd.py) to calculate FD correlation
-
-- Plot Fig. S3 using [`plot_figs6.ipynb`](figure/s6/plot_figs6.ipynb)
+- Plot Fig. S6 using [`plot_figs6.py`](figure/s6/plot_figs6.py)
 
 ### Supplementary Figure 7
 
-- Plot Fig. S7 using [`plot_figs7.py`](figure/s7/plot_figs7.py)
+- Run [`ccs_postproc.sh`](figure/s7/ccs_postproc.sh) and [`fmriprep_postproc.sh`](figure/s7/fmriprep_postproc.sh) to generate intermediate files for comparison
+
+- Run [`abcd.py`](figure/s7/abcd.py)/[`ccs.py`](figure/s7/ccs.py)/[`fmriprep.py`](figure/s7/fmriprep.py) to generate correlation
+
+- Plot Fig. S7 using [`plot_figs7.ipynb`](figure/s7/plot_figs7.ipynb)
 
 ### Supplementary Figure 8
 
-- Run [`corr_vol_ts.py`](figure/s8/corr_vol_ts.py) to get voxel-wise timeseries correlation
+- Run [`corr_fd.py`](figure/s8/corr_fd.py) to calculate FD correlation
+
+- Plot Fig. S8 using [`plot_figs8.ipynb`](figure/s8/plot_figs8.ipynb)
 
 ### Supplementary Figure 9
 
-- Plot Fig. S9 using [`plot_figs9.py`](figure/s5/plot_figs9.py)
+- Run [`corr_vol_ts.py`](figure/s9/corr_vol_ts.py) to get voxel-wise timeseries correlation
 
 ## Contributors
 

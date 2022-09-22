@@ -469,11 +469,6 @@ if __name__=='__main__':
     # wd_path=os.environ.get("BASEFOLDER")
     wd_path='/Users/xinhui.li/Documents/reproducibility/LA/Reproducibility_Analysis'
     base=wd_path+'/ROI'
-
-    # namechangedict={'v181-HBN-default':'CPAC:Default',
-    #                 'v181-HBN-fmriprep-opts':'fMRIPrep',
-    #                 'v181-HBN-DCAN':'abcd',
-    #                 'v181-HBN-CCS':'CCS'}
     
     # namechangedict={'hbn_cpac_default':'Default',
     #                 'hbn_cpac_abcd':'CPAC:ABCD',
@@ -485,7 +480,6 @@ if __name__=='__main__':
                     'hbn_cpac_ccs_hm':'CPAC:CCS',
                     'hbn_cpac_fmriprep_hm':'CPAC:fMRIPrep'}
 
-    # pipelines=['v181-HBN-CCS', 'v181-HBN-DCAN', 'v181-HBN-default', 'v181-HBN-fmriprep-opts']
     # pipelines=['hbn_cpac_default', 'hbn_cpac_abcd', 'hbn_cpac_ccs', 'hbn_cpac_fmriprep']
     pipelines=['hbn_cpac_default_hm', 'hbn_cpac_abcd_hm', 'hbn_cpac_ccs_hm', 'hbn_cpac_fmriprep_hm']
 
